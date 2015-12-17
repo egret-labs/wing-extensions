@@ -1,0 +1,49 @@
+{
+	"name": "TextTools",
+	"description": "Text replacement functions e.g. change case, reverse and ASCII Art.",
+	"version": "0.2.0",
+	"publisher": "egret",
+	"categories":[
+		"Other"
+	],
+	"icon": "images/TextToolsIcon.png",
+	"bugs": {
+		"url": "https://github.com/egret-labs/wing-extensions/issues"
+	},
+	"homepage": "https://github.com/egret-labs/wing-extensions/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/egret-labs/wing-extensions.git"
+	},
+	"activationEvents": [
+		"onCommand:extension.textFunctions"
+	],
+	"engines": {
+		"wing": "^2.5.0"
+	},
+	"main": "./out/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.textFunctions",
+				"title": "Text Functions",
+				"description": "Text functions on selections"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.textFunctions",
+				"key": "Alt+T"
+			}
+		]
+	},
+	"scripts": {
+		"compile": "tsc -watch"
+	},
+	"dependencies": {
+		"underscore.string": "^3.2.2",
+		"figlet": "^1.1.1"
+	},
+	"devDependencies": {
+	}
+}

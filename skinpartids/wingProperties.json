@@ -1,0 +1,15 @@
+{
+	"close":true,
+	"natures":["egretProject"],
+	"resourcePlugin":{
+		"configs":[],
+		"id":"org.egret-labs.resource",
+		"library":{
+			"children":[{
+					"isFolder":false,
+					"key":"images/SkinPartIdsTool.png",
+					"name":"SkinPartIdsTool.png"
+				}]
+		}
+	}
+}

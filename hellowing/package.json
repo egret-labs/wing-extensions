@@ -1,0 +1,40 @@
+{
+	"name": "HelloWing",
+	"description": "A Simple Extension For Egret Wing.",
+	"version": "1.0.0",
+	"publisher": "egret",
+	"categories":[
+		"Other"
+	],
+	"icon": "images/HelloWingIcon.png",
+	"bugs": {
+		"url": "https://github.com/egret-labs/wing-extensions/issues"
+	},
+	"homepage": "https://github.com/egret-labs/wing-extensions/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/egret-labs/wing-extensions.git"
+	},
+	"activationEvents": [
+		"onCommand:extension.helloWing"
+	],
+	"engines": {
+		"wing": "^2.5.0"
+	},
+	"main": "./out/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.helloWing",
+				"title": "Hello Wing"
+			}
+		]
+	},
+	"scripts": {
+		"compile": "tsc -watch"
+	},
+	"dependencies": {
+	},
+	"devDependencies": {
+	}
+}
