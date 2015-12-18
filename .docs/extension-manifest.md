@@ -13,6 +13,7 @@
 `displayName` | | `string`| 插件显示的名称.
 `description` | | `string` | 插件的描述文本.
 `icon` | | `string` | 插件使用的图标，大小为 128*128.
+`main` | | `string` | 插件入口的相对路径，当插件启动时将调用入口文件的`activate`方法.
 `categories` | | `string[]` | 插件的分类，常用分类有: `[Languages, Text, Debuggers, Other]`.
 [`contributes`](/.docs/contribution-points.md) | | `object` | 插件扩展点的描述对象，详见 [contributions](/.docs/contribution-points.md).
 [`activationEvents`](/.docs/activation-events.md) | | `string[]` | 插件激活事件的描述数组，详见 [activation events](/.docs/activation-events.md).
