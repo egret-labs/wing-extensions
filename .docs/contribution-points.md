@@ -28,7 +28,7 @@
 "contributes": {
 	"commands": [{
 		"command": "extension.sayHello",
-		"title": "Hello World"
+		"title": "Hello Wing"
 	}]
 }
 ...
