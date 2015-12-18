@@ -1,12 +1,12 @@
 {
 	"name": "SkinPartIdsTool",
-	"description": "Text replacement functions e.g. change case, reverse and ASCII Art.",
+	"description": "匹配EXML中的有id的皮肤部件,并复制生成对应的ts代码.",
 	"version": "0.1.0",
 	"publisher": "egret",
 	"categories":[
 		"Other"
 	],
-	"icon": "images/SkinPartIdsToolIcon.png",
+	"icon": "images/icon",
 	"bugs": {
 		"url": "https://github.com/egret-labs/wing-extensions/issues"
 	},
@@ -16,7 +16,7 @@
 		"url": "https://github.com/egret-labs/wing-extensions.git"
 	},
 	"activationEvents": [
-		"*"
+		"onCommands:extension.copyIds"
 	],
 	"engines": {
 		"wing": "^2.5.0"
