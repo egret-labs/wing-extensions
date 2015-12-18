@@ -20,9 +20,9 @@
 
 ## 插件列表
 
-[hellowing](/.docs/hellowing)
+[hellowing](/hellowing)
 
-[skinpartids](/.docs/skinpartids)
+[skinpartids](/skinpartids)
 
-[text-tools](/.docs/text-tools)
+[text-tools](/text-tools)
 
