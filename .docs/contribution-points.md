@@ -11,7 +11,7 @@
 
 自定义命令 `command` 。定义的命令可以在命令面板(Command Palette)中找到并执行。
 
->**Note:** 当命令通过快捷键或者命令面板被执行时, 将派发 [`activationEvent`](/.doc/activation-events.md) `onCommand:${command}`.
+>**Note:** 当命令通过快捷键或者命令面板被执行时, 将派发 [`activationEvent`](/.docs/activation-events.md) `onCommand:${command}`.
 
 可使用下列字段：
 
