@@ -26,7 +26,7 @@
 		"commands": [
 			{
 				"command": "extension.copyIds",
-				"title": "复制EXML中的皮肤部件"
+				"title": "复制EXML中的皮肤部件(Copy Exml Ids)"
 			}
 		],
 		"keybindings": [
