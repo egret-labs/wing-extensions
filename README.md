@@ -20,9 +20,9 @@
 
 ## 插件列表
 
-[hellowing](/hellowing)
+[hellowing-1.0.0](https://github.com/egret-labs/wing-extensions/raw/master/hellowing/release/hellowing-1.0.0.zip)
 
-[skinpartids](/skinpartids)
+[skinpartids-1.0.0](https://github.com/egret-labs/wing-extensions/raw/master/skinpartids/release/skinpartids-1.0.0.zip)
 
-[text-tools](/text-tools)
+[text-tools-1.0.0](https://github.com/egret-labs/wing-extensions/raw/master/text-tools/release/text-tools-1.0.0.zip)
 
