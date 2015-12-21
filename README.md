@@ -12,11 +12,11 @@
 
 [插件API](/.docs/extentions-api.md)
 
-## 调试和发布
+## 调试，发布和安装
 
 [调试插件](/.docs/how-to-debug.md)
 
-[发布插件](/.docs/how-to-publish.md)
+[发布安装插件](/.docs/how-to-publish.md)
 
 ## 插件列表
 
