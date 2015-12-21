@@ -14,7 +14,7 @@
 
 ## 调试和发布
 
-[开始调试](/.docs/how-to-debug.md)
+[调试插件](/.docs/how-to-debug.md)
 
 [发布插件](/.docs/how-to-publish.md)
 
