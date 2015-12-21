@@ -1,81 +1,56 @@
+/*
+	EgretWing插件API定义文件，对应版本 2.5.0
+*/
+
 declare namespace wing {
 	/**
-	 * Egret Wing's version
+	 * Egret Wing 的版本号
 	 */
 	export var version: string;
 	
 	/**
-	 * Represents a reference to a command. Provides a title which
-	 * will be used to represent a command in the UI and, optionally,
-	 * an array of arguments which will be passed to the command handler
-	 * function when invoked.
-	 */
-	export interface Command {
-		/**
-		 * Title of the command, like `save`.
-		 */
-		title: string;
-
-		/**
-		 * The identifier of the actual command handler.
-		 * @see [commands.registerCommand](#commands.registerCommand).
-		 */
-		command: string;
-
-		/**
-		 * Arguments that the command handler should be
-		 * invoked with.
-		 */
-		arguments?: any[];
-	}
-	
-	/**
-	 * Represents a line of text, such as a line of source code.
-	 *
-	 * TextLine objects are __immutable__. When a [document](#TextDocument) changes,
-	 * previously retrieved lines will not represent the latest state.
+	 * 表示一行文本
 	 */
 	export interface TextLine {
-
+        
 		/**
-		 * The zero-based line number.
+		 * 从0开始的行数
 		 *
 		 * @readonly
 		 */
 		lineNumber: number;
 
 		/**
-		 * The text of this line without the line separator characters.
+		 * 去除换行符后的行文本内容
 		 *
 		 * @readonly
 		 */
 		text: string;
 
 		/**
-		 * The range this line covers without the line separator characters.
+		 * 不包含换行符的行内容所在范围
 		 *
 		 * @readonly
 		 */
 		range: Range;
 
 		/**
-		 * The range this line covers with the line separator characters.
+		 * 包含换行符的行内容所在范围
 		 *
 		 * @readonly
 		 */
 		rangeIncludingLineBreak: Range;
 
 		/**
-		 * The offset of the first character which is not a whitespace character as defined
-		 * by `/\s/`.
+		 * 第一个非空字符的位置，非空字符包括\t。
 		 *
 		 * @readonly
 		 */
 		firstNonWhitespaceCharacterIndex: number;
 
 		/**
-		 * Whether this line is whitespace only, shorthand
-		 * for [TextLine.firstNonWhitespaceCharacterIndex](#TextLine.firstNonWhitespaceCharacterIndex]) === [TextLine.text.length](#TextLine.text.length).
+		 * 该行是否仅包括非空, 当该值为true时，等效于
+         * TextLine.firstNonWhitespaceCharacterIndex === TextLine.text.length
 		 *
 		 * @readonly
 		 */
@@ -83,22 +58,20 @@ declare namespace wing {
 	}
 	
 	/**
-	 * Represents a document, such as a source file. Text documents have
-	 * [lines](#TextLine) and knowledge about an underlying resource like a file.
+	 * 表示一个文档数据
 	 */
 	export interface Document {
 		/**
-		 * The associated URI for this document. Most documents have the __file__-scheme, indicating that they
-		 * represent files on disk. However, some documents may have other schemes indicating that they are not
-		 * available on disk.
+		 * 关联文档的资源标识符，大多数文档都持有一个文件标示,表明它们代表了一个硬盘上的文件。
+		 * 可是另一部分包含其他的标示，表明他们不是一个硬盘上的文件。
 		 *
 		 * @readonly
 		 */
 		uri: Uri;
 		
 		/**
-		 * The file system path of the associated resource. Shorthand
-		 * notation for [Document.uri.fsPath](#Document.uri.fsPath). Independent of the uri scheme.
+		 * 关联资源在文件系统中的路径。
+		 * 速记符号 [Document.uri.fsPath](#Document.uri.fsPath). 每个资源标识符具有唯一的该属性。
 		 *
 		 * @readonly
 		 */
@@ -106,42 +79,34 @@ declare namespace wing {
 	}
 	
 	/**
-	 * Represents a text document, such as a source file. Text documents have
-	 * [lines](#TextLine) and knowledge about an underlying resource like a file.
+	 * 表示一个文本文档数据，包含
+	 * [lines](#TextLine) 和对应文件的相关信息
 	 */
 	export interface TextDocument extends Document {
 
 		/**
-		 * Is this document representing an untitled file.
-		 *
-		 * @readonly
-		 */
-		isUntitled: boolean;
-
-		/**
-		 * The identifier of the language associated with this document.
+		 * 该文本文档的语言id， 一般情况为该文档的扩展名。
 		 *
 		 * @readonly
 		 */
 		languageId: string;
 
 		/**
-		 * The version number of this document (it will strictly increase after each
-		 * change, including undo/redo).
+		 * 该文本文档的版本号，每次文档内容改变版本将增加。
 		 *
 		 * @readonly
 		 */
 		version: number;
 
 		/**
-		 * true if there are unpersisted changes.
+		 * 是否是被修改过，并且没有保存。
 		 *
 		 * @readonly
 		 */
 		isDirty: boolean;
 
 		/**
-		 * Save the underlying file.
+		 * 保存对应的文件。
 		 *
 		 * @return A promise that will resolve to true when the file
 		 * has been saved.
@@ -149,619 +114,612 @@ declare namespace wing {
 		save(): Thenable<boolean>;
 
 		/**
-		 * The number of lines in this document.
+		 * 文本文档的行数。
 		 *
 		 * @readonly
 		 */
 		lineCount: number;
 
 		/**
-		 * Returns a text line denoted by the line number. Note
-		 * that the returned object is *not* live and changes to the
-		 * document are not reflected.
+		 * 返回指定行数的TextLine。
 		 *
-		 * @param line A line number in [0, lineCount).
-		 * @return A [line](#TextLine).
+		 * @param line 在[0, lineCount)范围内的行数。
+		 * @return 一个TextLine实例。
 		 */
 		lineAt(line: number): TextLine;
 
 		/**
-		 * Returns a text line denoted by the position. Note
-		 * that the returned object is *not* live and changes to the
-		 * document are not reflected.
-		 *
-		 * The position will be [adjusted](#TextDocument.validatePosition).
+		 * 返回指定Position位置的TextLine。
+         * 
+         * 此方法会自动调整position为有效的Position。
 		 *
 		 * @see [TextDocument.lineAt](#TextDocument.lineAt)
-		 * @param position A position.
-		 * @return A [line](#TextLine).
+		 * @param position 位置。
+		 * @return 一个TextLine实例。
 		 */
 		lineAt(position: Position): TextLine;
 
 		/**
-		 * Converts the position to a zero-based offset.
+         * 返回指定Position位置在文本文档中的偏移位置。
 		 *
-		 * The position will be [adjusted](#TextDocument.validatePosition).
-		 *
-		 * @param position A position.
-		 * @return A valid zero-based offset.
+         * 此方法会自动调整position为有效的Position。
+         * 
+		 * @param position 位置。
+		 * @return 从0开始的索引位置。
 		 */
 		offsetAt(position: Position): number;
 
 		/**
-		 * Converts a zero-based offset to a position.
+         * 返回指定偏移位置对应的Position。
 		 *
-		 * @param offset A zero-based offset.
-		 * @return A valid [position](#Position).
+		 * @param offset 从0开始的索引位置。
+		 * @return 一个Position实例。
 		 */
 		positionAt(offset: number): Position;
 
 		/**
-		 * Get the text of this document. A substring can be retrieved by providing
-		 * a range. The range will be [adjusted](#TextDocument.validateRange).
+         * 返回指定Range范围对应的文本字符串。
+         * 
+         * 此方法会自动调整range为有效的Range对象。
 		 *
-		 * @param range Include only the text included by the range.
-		 * @return The text inside the provided range or the entire text.
+		 * @param range 范围，如果不传入该参数，则获取所有的文本数据。
+		 * @return 文本字符串。
 		 */
 		getText(range?: Range): string;
 
 		/**
-		 * Get a word-range at the given position. By default words are defined by
-		 * common separators, like space, -, _, etc. In addition, per languge custom
-		 * [word definitions](#LanguageConfiguration.wordPattern) can be defined.
+         * 返回指定Position位置单词的Range。
+         * 
+         * 此方法会自动调整position为有效的Position
 		 *
-		 * The position will be [adjusted](#TextDocument.validatePosition).
-		 *
-		 * @param position A position.
-		 * @return A range spanning a word, or `undefined`.
+		 * @param position 位置。
+		 * @return 一个Range实例。
 		 */
 		getWordRangeAtPosition(position: Position): Range;
 
 		/**
-		 * Ensure a range is completely contained in this document.
+         * 将一个Range转换成该文本文档有效的Range对象。
 		 *
-		 * @param range A range.
-		 * @return The given range or a new, adjusted range.
+		 * @param range 一个Range实例。
+		 * @return 传入的Range或者已经被调整过的Range。
 		 */
 		validateRange(range: Range): Range;
 
 		/**
-		 * Ensure a position is contained in the range of this document.
+		 * 将一个Position转换成该文本文档有效的Position对象。
 		 *
-		 * @param position A position.
-		 * @return The given position or a new, adjusted position.
+		 * @param position 一个position。
+		 * @return 传入的Position或者已经被调整过的Position。
 		 */
 		validatePosition(position: Position): Position;
 	}
 	
+    /**
+     * 编辑器类型。
+     */
 	export enum EditorType {
+        /**
+         * 基本编辑器。在EgretWing的文档窗口中，每一个窗口页都是一个编辑器。
+         */
 		BaseEditor = 1,
-		TextEditor = 2
+        /**
+         * 文本编辑器。比如ts编辑器，json编辑器。注意：exml编辑器不属于TextEditor，因为该编辑器
+         * 不仅包含文本编辑视图，还包含一个设计视图。同理RES之类的json文件编辑也不是单纯的文本编辑器。
+         */
+		TextEditor = 3
 	}
 	
+    /**
+     * 编辑器。在EgretWing的文档窗口中，每一个窗口页都是一个编辑器。
+     */
 	export interface Editor {
 		/**
-		 * The document associated with this text editor. The document will be the same for the entire lifetime of this text editor.
+		 * 关联到该编辑器的文档。这个文档将会和这个编辑器含有相同的生命周期。
 		 */
 		document: Document;
 		
-		type:EditorType;
+        /**
+         * 判断是否是指定类型的编辑器。
+         * @param type 编辑器类型，使用wing.EditorType中的常量。
+         */
+		isTypeOf(type: EditorType): boolean;
 	}
 	
 	/**
-	 * Represents an editor that is attached to a [document](#TextDocument).
+	 * 文本编辑器。比如ts编辑器，json编辑器。注意：exml编辑器不属于TextEditor，因为该编辑器
+     * 不仅包含文本编辑视图，还包含一个设计视图。同理RES之类的json文件编辑也不是单纯的文本编辑器。
 	 */
 	export interface TextEditor extends Editor {
 		/**
-		 * The document associated with this text editor. The document will be the same for the entire lifetime of this text editor.
+		 * 该编辑器对应的文本文档。 这个文档将会和这个文本编辑器含有相同的生命周期。
 		 */
 		document: TextDocument;
 
 		/**
-		 * The primary selection on this text editor. Shorthand for `TextEditor.selections[0]`.
+		 * 该文本编辑器的选中数据。
 		 */
 		selection: Selection;
 
 		/**
-		 * The selections in this text editor. The primary selection is always at index 0.
-		 */
-		selections: Selection[];
-
-		/**
-		 * [readonly] Text editor options.
+		 * [readonly] 编辑器的设置选项。
 		 */
 		options: TextEditorOptions;
 		
 		/**
-		 * Perform an edit on the document associated with this text editor.
+		 * 对关联文档执行一个编辑操作。 使用callback回调函数获取一个文本编辑对象TextEditorEdit。
 		 *
-		 * The given callback-function is invoked with an [edit-builder](#TextEditorEdit) which must
-		 * be used to make edits. Note that the edit-builder is only valid while the
-		 * callback executes.
-		 *
-		 * @param callback A function which can make edits using an [edit-builder](#TextEditorEdit).
-		 * @return A promise that resolves with a value indicating if the edits could be applied.
+		 * @param callback 创建编辑操作的回调函数，包含一个文本编辑对象TextEditorEdit。
+		 * @return 包含是否操作成功参数的Thenable对象。
 		 */
 		edit(callback: (editBuilder: TextEditorEdit) => void): Thenable<boolean>;
 	}
 	
 	/**
-	 * A complex edit that will be applied in one transaction on a TextEditor.
-	 * This holds a description of the edits and if the edits are valid (i.e. no overlapping regions, document was not changed in the meantime, etc.)
-	 * they can be applied on a [document](#Document) associated with a [text editor](#TextEditor).
-	 *
+     * 表示一个文本编辑操作对象。该对象定义了一系列的文本编辑操作方法来改变编辑器中的文本数据。
 	 */
 	export interface TextEditorEdit {
 		/**
-		 * Replace a certain text region with a new value.
-		 * You can use \r\n or \n in `value` and they will be normalized to the current [document](#Document).
+		 * 将指定范围的文本替换为一个新值。
 		 *
-		 * @param location The range this operation should remove.
-		 * @param value The new text this operation should insert after removing `location`.
+		 * @param location 要替换的文本范围。
+		 * @param value 新的文本内容。如果该字符串中包含换行符(\n \r\n)则会被替换成编辑器所对应的换行符。
 		 */
 		replace(location: Position | Range | Selection, value: string): void;
 
 		/**
-		 * Insert text at a location.
-		 * You can use \r\n or \n in `value` and they will be normalized to the current [document](#Document).
-		 * Although the equivalent text edit can be made with [replace](#TextEditorEdit.replace), `insert` will produce a different resulting selection (it will get moved).
+		 * 在指定位置插入文本。
 		 *
-		 * @param location The position where the new text should be inserted.
-		 * @param value The new text this operation should insert.
+		 * @param location 要插入的文本位置。
+		 * @param value 新的文本内容。如果该字符串中包含换行符(\n \r\n)则会被替换成编辑器所对应的换行符。
 		 */
 		insert(location: Position, value: string): void;
 
 		/**
-		 * Delete a certain text region.
+		 * 删除指定范围或者选中范围的文本。
 		 *
-		 * @param location The range this operation should remove.
+		 * @param location 需删除的文本范围。
 		 */
 		delete(location: Range | Selection): void;
 	}
 	
 	/**
-	 * Represents a line and character position, such as
-	 * the position of the cursor.
-	 *
-	 * Position objects are __immutable__. Use the [with](#Position.with) or
-	 * [translate](#Position.translate) methods to derive new positions
-	 * from an existing position.
+	 * 表示一个行和列位置。
 	 */
 	export class Position {
 
 		/**
-		 * The zero-based line value.
+		 * 从0开始的行数。
 		 * @readonly
 		 */
 		line: number;
 
 		/**
-		 * The zero-based character value.
+		 * 从0开始的列数。
 		 * @readonly
 		 */
 		character: number;
 
 		/**
-		 * @param line A zero-based line value.
-		 * @param character A zero-based character value.
+		 * @param 从0开始的行数。
+		 * @param 从0开始的列数。
 		 */
 		constructor(line: number, character: number);
 
 		/**
-		 * Check if `other` is before this position.
+         * 该位置是否在指定位置之前。
 		 *
-		 * @param other A position.
-		 * @return `true` if position is on a smaller line
-		 * or on the same line on a smaller character.
+		 * @param other 要比较的位置。
+		 * @return 如果该位置在指定位置之前，则返回`true`，否则返回`false`。
 		 */
 		isBefore(other: Position): boolean;
 
 		/**
-		 * Check if `other` is before or equal to this position.
+		 * 该位置是否在指定位置之前或者与指定位置相同。
 		 *
-		 * @param other A position.
-		 * @return `true` if position is on a smaller line
-		 * or on the same line on a smaller or equal character.
+		 * @param other 要比较的位置。
+		 * @return 如果该位置在指定位置之前或者与指定位置相同，则返回`true`，否则返回`false`。
 		 */
 		isBeforeOrEqual(other: Position): boolean;
 
 		/**
-		 * Check if `other` is after this position.
+         * 该位置是否在指定位置之后。
 		 *
-		 * @param other A position.
-		 * @return `true` if position is on a greater line
-		 * or on the same line on a greater character.
+		 * @param other 要比较的位置。
+		 * @return 如果该位置在指定位置之后，则返回`true`，否则返回`false`。
 		 */
 		isAfter(other: Position): boolean;
 
 		/**
-		 * Check if `other` is after or equal to this position.
+		 * 该位置是否在指定位置之后或者与指定位置相同。
 		 *
-		 * @param other A position.
-		 * @return `true` if position is on a greater line
-		 * or on the same line on a greater or equal character.
+		 * @param other 要比较的位置。
+		 * @return 如果该位置在指定位置之后或者与指定位置相同，则返回`true`，否则返回`false`。
 		 */
 		isAfterOrEqual(other: Position): boolean;
 
 		/**
-		 * Check if `other` equals this position.
+		 * 该位置是否与指定位置相同。
 		 *
-		 * @param other A position.
-		 * @return `true` if the line and character of the given position are equal to
-		 * the line and character of this position.
+		 * @param other 要比较的位置。
+		 * @return 如果该位置与指定位置相同，则返回`true`，否则返回`false`。
 		 */
 		isEqual(other: Position): boolean;
 
 		/**
-		 * Compare this to `other`.
+		 * 与指定位置做比较。
 		 *
-		 * @param other A position.
-		 * @return A number smaller than zero if this position is before the given position,
-		 * a number greater than zero if this position is after the given position, or zero when
-		 * this and the given position are equal.
+		 * @param other 要比较的位置。
+		 * @return 如果自身在指定位置之前则返回负数, 如果自身在指定位置之前则返回正数,如果相同返回0。
 		 */
 		compareTo(other: Position): number;
 
 		/**
-		 * Create a new position relative to this position.
-		 *
-		 * @param lineDelta Delta value for the line value, default is `0`.
-		 * @param characterDelta Delta value for the character value, default is `0`.
-		 * @return A position which line and character is the sum of the current line and
-		 * character and the corresponding deltas.
+		 * 创建一个相对于自身的位置。
+		 * @param lineDelta 行差值,默认为`0`。
+		 * @param characterDelta 列差值默认为 `0`。
+		 * @return 返回传入的行差值和字符位置差值与自身的和。
 		 */
 		translate(lineDelta?: number, characterDelta?: number): Position;
 
 		/**
-		 * Create a new position derived from this position.
+		 * 创建一个新的位置。
 		 *
-		 * @param line Value that should be used as line value, default is the [existing value](#Position.line)
-		 * @param character Value that should be used as character value, default is the [existing value](#Position.character)
-		 * @return A position where line and character are replaced by the given values.
+		 * @param line 用于作为行数, 默认为 [existing value](#Position.line)。
+		 * @param character 用于作为列数, 默认为 [existing value](#Position.character)。
+		 * @return 一个以传入或默认值为行数和列数的位置。
 		 */
 		with(line?: number, character?: number): Position;
 	}
 
 	/**
-	 * A range represents an ordered pair of two positions.
-	 * It is guaranteed that [start](#Range.start).isBeforeOrEqual([end](#Range.end))
-	 *
-	 * Range objects are __immutable__. Use the [with](#Range.with),
-	 * [intersection](#Range.intersection), or [union](#Range.union) methods
-	 * to derive new ranges from an existing range.
+     * 表示两个一段文本范围。start位置在end位置之前或者相同。
 	 */
 	export class Range {
 
 		/**
-		 * The start position. It is before or equal to [end](#Range.end).
+		 * 起始位置,小于或等于 [end](#Range.end)。
 		 * @readonly
 		 */
 		start: Position;
 
 		/**
-		 * The end position. It is after or equal to [start](#Range.start).
+		 * 结束位置,大于或等于 [start](#Range.start)。
 		 * @readonly
 		 */
 		end: Position;
 
 		/**
-		 * Create a new range from two positions. If `start` is not
-		 * before or equal to `end`, the values will be swapped.
+		 * 根据两个位置创建一个新范围。如果start位置在end位置之后，则将互换start和end参数。
 		 *
-		 * @param start A position.
-		 * @param end A position.
+		 * @param start 起始位置。
+		 * @param end 结束位置。
 		 */
 		constructor(start: Position, end: Position);
 
 		/**
-		 * Create a new range from number coordinates. It is a shorter equivalent of
-		 * using `new Range(new Position(startLine, startCharacter), new Position(endLine, endCharacter))`
+		 * 根据两组行列位置创建一个新范围。如果start表示的行列位置在end表示的行列位置之后，则将互换start和end表示的位置。
 		 *
-		 * @param startLine A zero-based line value.
-		 * @param startCharacter A zero-based character value.
-		 * @param endLine A zero-based line value.
-		 * @param endCharacter A zero-based character value.
+		 * @param startLine 从0开始的行数。
+		 * @param startCharacter 从0开始的列数。
+		 * @param endLine 从0开始的行数。
+		 * @param endCharacter 从0开始的列数。
 		 */
 		constructor(startLine: number, startCharacter: number, endLine: number, endCharacter: number);
 
 		/**
-		 * `true` iff `start` and `end` are equal.
+		 * 如果起始位置和终点位置相同，则返回`true`，否则返回`false`。
 		 */
 		isEmpty: boolean;
 
 		/**
-		 * `true` iff `start.line` and `end.line` are equal.
+		 * 如果起始位置行数和终点位置行数相同，则返回`true`，否则返回`false`。
 		 */
 		isSingleLine: boolean;
 
 		/**
-		 * Check if a position or a range is contained in this range.
+		 * 检查该范围是否包含指定位置或范围。
 		 *
-		 * @param positionOrRange A position or a range.
-		 * @return `true` iff the position or range is inside or equal
-		 * to this range.
+		 * @param positionOrRange 一个位置或范围。
+		 * @return 如果该范围包含指定位置或范围，则返回`true`，否则返回`false`。
 		 */
 		contains(positionOrRange: Position | Range): boolean;
 
 		/**
-		 * Check if `other` equals this range.
+		 * 检查该范围是否与指定范围相同。
 		 *
-		 * @param other A range.
-		 * @return `true` when start and end are [equal](#Position.isEqual) to
-		 * start and end of this range.
+		 * @param other 要比较的范围。
+		 * @return 如果该范围与指定范围相同，则返回`true`，否则返回`false`。
 		 */
 		isEqual(other: Range): boolean;
 
 		/**
-		 * Intersect `range` with this range and returns a new range or `undefined`
-		 * if the ranges have no overlap.
+		 * 返回与指定范围交集。如果没有交集则返回 `undefined`。
 		 *
-		 * @param range A range.
-		 * @return A range of the greater start and smaller end positions. Will
-		 * return undefined when there is no overlap.
+		 * @param range 一个范围。
+		 * @return 相交的范围。
 		 */
 		intersection(range: Range): Range;
 
 		/**
-		 * Compute the union of `other` with this range.
+		 * 返回与指定范围的合集。
 		 *
-		 * @param other A range.
-		 * @return A range of smaller start position and the greater end position.
+		 * @param other 一个范围。
+		 * @return 合集的范围。
 		 */
 		union(other: Range): Range;
 
 		/**
-		 * Create a new range derived from this range.
+		 * 创建一个新的范围。
 		 *
-		 * @param start A position that should be used as start. The default value is the [current start](#Range.start).
-		 * @param end A position that should be used as end. The default value is the [current end](#Range.end).
-		 * @return A range derived from this range with the given start and end position.
-		 * If start and end are not different this range will be returned.
+		 * @param start 起点的位置。 默认值是 [current start](#Range.start)。
+		 * @param end 终点的位置。 默认值是 [current end](#Range.end)。
+		 * @return 一个新的范围，如果起点和指定与自身相同则返回自身。
 		 */
 		with(start?: Position, end?: Position): Range;
 	}
 
 	/**
-	 * Represents a text selection in an editor.
+	 * 文本选中范围数据。
 	 */
 	export class Selection extends Range {
 
 		/**
-		 * The position at which the selection starts.
-		 * This position might be before or after [active](#Selection.active).
+		 * 选中的起始位置。
+		 * 这个位置可能在 [active](#Selection.active)之前或之后。
 		 */
 		anchor: Position;
 
 		/**
-		 * The position of the cursor.
-		 * This position might be before or after [anchor](#Selection.anchor).
+		 * 光标的位置。
+		 * 这个位置可能在[anchor](#Selection.anchor)之前或之后。
 		 */
 		active: Position;
 
 		/**
-		 * Create a selection from two postions.
+		 * 创建一个选中范围数据。
 		 *
-		 * @param anchor A position.
-		 * @param active A position.
+		 * @param anchor 选中的起始位置。
+		 * @param active 选中的终止位置。
 		 */
 		constructor(anchor: Position, active: Position);
 
 		/**
-		 * Create a selection from four coordinates.
+		 * 创建一个选中范围数据。
 		 *
-		 * @param anchorLine A zero-based line value.
-		 * @param anchorCharacter A zero-based character value.
-		 * @param activeLine A zero-based line value.
-		 * @param activeCharacter A zero-based character value.
+		 * @param anchorLine 选中的起始行索引，从0开始。
+		 * @param anchorCharacter 选中的起始列索引，从0开始。
+		 * @param activeLine 选中的结束行索引，从0开始。
+		 * @param activeCharacter 选中的结束列索引，从0开始。
 		 */
 		constructor(anchorLine: number, anchorCharacter: number, activeLine: number, activeCharacter: number);
 
 		/**
-		 * A selection is reversed if [active](#Selection.active).isBefore([anchor](#Selection.anchor)).
+         * 是否是反向选择。等效于[active](#Selection.active).isBefore([anchor](#Selection.anchor))。
 		 */
 		isReversed: boolean;
 	}
 	
 	/**
-	 * Represents an event describing the change in a [text editor's selections](#TextEditor.selections).
+	 * 描述[text editor's selections](#TextEditor.selections)改变的事件。
 	 */
 	export interface TextEditorSelectionChangeEvent {
 		/**
-		 * The [text editor](#TextEditor) for which the selections have changed.
+		 * 选中数据改变的源 [text editor](#TextEditor) 。
 		 */
 		textEditor: TextEditor;
 		/**
-		 * The new value for the [text editor's selections](#TextEditor.selections).
+		 * 新的 [text editor's selections](#TextEditor.selections) 数据。
 		 */
 		selections: Selection[];
 	}
 
 	/**
-	 * Represents an event describing the change in a [text editor's options](#TextEditor.options).
+	 * 描述[text editor's options](#TextEditor.options)改变的事件。
 	 */
 	export interface TextEditorOptionsChangeEvent {
 		/**
-		 * The [text editor](#TextEditor) for which the options have changed.
+		 * 选项数据改变的源 [text editor](#TextEditor)。
 		 */
 		textEditor: TextEditor;
 		/**
-		 * The new value for the [text editor's options](#TextEditor.options).
+		 * 新的 [text editor's options](#TextEditor.options) 数据。
 		 */
 		options: TextEditorOptions;
 	}
 
 	/**
-	 * Represents a [text editor](#TextEditor)'s [options](#TextEditor.options).
+	 * 表示 [text editor](#TextEditor)的 [options](#TextEditor.options)。
 	 */
 	export interface TextEditorOptions {
 
 		/**
-		 * The size in spaces a tab takes. This is used for two purposes:
-		 *  - the rendering width of a tab character;
-		 *  - the number of spaces to insert when [insertSpaces](#TextEditorOptions.insertSpaces) is true.
+		 * 表示一个缩进占用的空间。这用来表示2个目的：
+		 *  - 一个缩进的宽度;
+		 *  - 当 [insertSpaces](#TextEditorOptions.insertSpaces) 为true时，一个缩进代表的空格数目。
 		 */
 		tabSize: number;
 
 		/**
-		 * When pressing Tab insert [n](#TextEditorOptions.tabSize) spaces.
+		 * 输入缩进时替换为 [n](#TextEditorOptions.tabSize) 个空格。
 		 */
 		insertSpaces: boolean;
 	}
 	
 	/**
-	 * An event describing an individual change in the text of a [document](#TextDocument).
+	 * 描述 [document](#TextDocument) 中文本改变的事件。
 	 */
 	export interface TextDocumentContentChangeEvent {
 		/**
-		 * The range that got replaced.
+		 * 被替换的文本范围。
 		 */
 		range: Range;
 		/**
-		 * The length of the range that got replaced.
+		 * 范围内被替换的长度
 		 */
 		rangeLength: number;
 		/**
-		 * The new text for the range.
+		 * 被替换后范围内的新文本
 		 */
 		text: string;
 	}
 
 	/**
-	 * An event describing a transactional [document](#TextDocument) change.
+	 * 描述 [document](#TextDocument) 改变事件。
 	 */
 	export interface TextDocumentChangeEvent {
 
 		/**
-		 * The affected document.
+		 * 受影响的文本文档。
 		 */
 		document: TextDocument;
 
 		/**
-		 * An array of content changes.
+		 * 文本内容改变事件的数组。
 		 */
 		contentChanges: TextDocumentContentChangeEvent[];
 	}
 	
 	/**
-	 * Namespace for dealing with the current workspace. A workspace is the representation
-	 * of the folder that has been opened. There is no workspace when just a file but not a
-	 * folder has been opened.
-	 *
-	 * The workspace offers support for [listening](#workspace.createFileSystemWatcher) to fs
-	 * events and for [finding](#workspace#findFiles) files. Both perform well and run _outside_
-	 * the editor-process so that they should be always used instead of nodejs-equivalents.
+	 * 工作空间。
 	 */
 	export namespace workspace {
 		/**
-		 * All text documents currently known to the system.
+		 * 当前系统所记录的所有文档。
 		 *
 		 * @readonly
 		 */
 		export let documents: Document[];
         
+        /**
+         * 当前激活的项目。
+         */
         export let activeProject: Project;
         
+        /**
+         * 保存所有未保存的文档。
+         */
         export function saveAll(): Thenable<Boolean>;
 		
 		/**
-		 * Opens the denoted document from disk. Will return early if the
-		 * document is already open, otherwise the document is loaded and the
-		 * [open document](#workspace.onDidOpenDocument)-event fires.
-		 * The document to open is denoted by the [uri](#Uri). Two schemes are supported:
+         * 打开指定uri的一个文档数据。如果该位置的文档已经被打开，则什么也不做。
+         * 如果打开成功则会抛出[open document](#workspace.onDidOpenDocument)-event。
+		 * 
+		 * 通过 [uri](#Uri) 打开指定的文档. 目前只支持打开 `schemes` 为 file 的文档资源。
 		 *
-		 * file: A file on disk, will be rejected if the file does not exist or cannot be loaded, e.g. 'file:///Users/frodo/r.ini'.
-		 * untitled: A new file that should be saved on disk, e.g. 'untitled:/Users/frodo/new.js'. The language will be derived from the file name.
+		 * file: 在硬盘中的文件, 如果文件不存在或者权限不足会读取失败,比如 'file:///Users/frodo/r.ini'。
 		 *
-		 * Uris with other schemes will make this method return a rejected promise.
-		 *
-		 * @param uri Identifies the resource to open.
-		 * @return A promise that resolves to a [document](#Document).
+		 * @param uri 需打开的资源的标识符。
+		 * @return 包含打开的文档数据的Thenable对象。
 		 */
 		export function openDocument(uri: Uri): Thenable<Document>;
 
 		/**
-		 * A short-hand for `openDocument(Uri.file(fileName))`.
+		 * 打开指定文件路径的一个文档数据。
 		 *
-		 * @see [openDocument](#openDocument)
-		 * @param fileName A name of a file on disk.
-		 * @return A promise that resolves to a [document](#Document).
+		 * @param fileName 文件的路径。
+		 * @return 包含打开的文档数据的Thenable对象。
 		 */
 		export function openDocument(fileName: string): Thenable<Document>;
 		
+        /**
+         * 获取所有项目。
+         */
 		export function getProjects(): Project[];
 		
+        /**
+         * 获取指定名称的项目。
+         */
 		export function getProject(name: string): Project;
 		
 		/**
-		 * An event that is emitted when a [text document](#Document) is opened.
+		 * 当 [text document](#Document) 被打开时，抛出一个的对应事件。
 		 */
 		export const onDidOpenDocument: Event<Document>;
 
 		/**
-		 * An event that is emitted when a [text document](#Document) is disposed.
+		 * 当 [text document](#Document) 被销毁时，抛出一个的对应事件。
 		 */
 		export const onDidCloseDocument: Event<Document>;
 
 		/**
-		 * An event that is emitted when a [text document](#Document) is changed.
+		 * 当 [text document](#Document) 改变时，抛出一个的对应事件。
 		 */
 		export const onDidChangeTextDocument: Event<TextDocumentChangeEvent>;
 
 		/**
-		 * An event that is emitted when a [text document](#Document) is saved to disk.
+		 * 当 [text document](#Document) 被保存到硬盘时，抛出一个的对应事件。
 		 */
 		export const onDidSaveDocument: Event<Document>;
         
+        /**
+         * 当添加了一个项目时，抛出该事件。
+         */
         export const onDidAddProject: Event<Project>;
+        /**
+         * 当删除了一个项目时，抛出该事件。
+         */
         export const onDidRemoveProject: Event<Project>;
+        /**
+         * 当前激活项目改变时，抛出该事件。
+         */
         export const onDidChangeActiveProject: Event<Project>;
 	}
 	
+    /**
+     * 表示一个项目。
+     */
 	export interface Project {
+        /**
+         * 项目的的Uri。
+         */
 		uri: Uri;
 		
+        /**
+         * 项目名称。
+         */
 		name: string;
-	
+        
+        /**
+         * 项目路径。
+         */
 		path: string;
-	
+        
+        /**
+         * 将指定路径转换相对于项目的相对路径。
+         */
 		asRelativePath(pathOrUri: string|Uri): string;
 	}
 	
 	/**
-	 * Represents a type which can release resources, such
-	 * as event listening or a timer.
+	 * 代表一类可以被销毁的资源, 比如事件监听和计时器。
 	 */
 	export class Disposable {
 
 		/**
-		 * Combine many disposable-likes into one. Use this method
-		 * when having objects with a dispose function which are not
-		 * instances of Disposable.
+		 * 将多个类 Disposable 合并为一个。
+		 * 这个方法主要用于含有dispose方法的非Disposable对象。
 		 *
-		 * @param disposableLikes Objects that have at least a `dispose`-function member.
-		 * @return Returns a new disposable which, upon dispose, will
-		 * dispose all provided disposables.
+		 * @param 含有`dispose`方法的类 Disposable 对象。
+		 * @return 返回一个新创建的Disposable对象，使用dispose会释放所有已提供的资源。
 		 */
 		static from(...disposableLikes: { dispose: () => any }[]): Disposable;
 
 		/**
-		 * Creates a new Disposable calling the provided function
-		 * on dispose.
-		 * @param callOnDispose Function that disposes something.
+		 * 创建一个调用提供的销毁函数的Disposable对象。
+		 * @param callOnDispose 销毁函数。
 		 */
 		constructor(callOnDispose: Function);
 
 		/**
-		 * Dispose this object.
+		 * 销毁这个对象。
 		 */
 		dispose(): any;
 	}
 	
 	/**
-	 * Represents a typed event.
-	 *
-	 * A function that represents an event to which you subscribe by calling it with
-	 * a listener function as argument.
+	 * 表示一类事件。
+	 * 
+	 * 需传入你所需监听的事件作为参数的监听函数。
 	 *
 	 * @sample `item.onDidChange(function(event) { console.log("Event happened: " + event); });`
 	 */
@@ -780,283 +738,224 @@ declare namespace wing {
 	}
 	
 	/**
-	 * Represents an item that can be selected from
-	 * a list of items.
+	 * 表示可以在列表中选择的呈现项。
 	 */
 	export interface QuickPickItem {
 
 		/**
-		 * A label. Will be rendered prominent.
+		 * 显示项的标签名称。
 		 */
 		label: string;
 
 		/**
-		 * A description. Will be rendered less prominent.
+		 * 显示项的文本描述。
 		 */
 		description: string;
 	}
 	
 	/**
-	 * A text edit represents edits that should be applied
-	 * to a document.
+	 * 表示用于文档的文本操作。
 	 */
 	export class TextEdit {
 
 		/**
-		 * Utility to create a replace edit.
+		 * 创建一个替换操作。
 		 *
-		 * @param range A range.
-		 * @param newText A string.
-		 * @return A new text edit object.
+		 * @param range 替换范围。
+		 * @param newText 替换后的内容。
+		 * @return 一个新的文本操作对象。
 		 */
 		static replace(range: Range, newText: string): TextEdit;
 
 		/**
-		 * Utility to create an insert edit.
+		 * 创建一个插入操作。
 		 *
-		 * @param position A position, will become an empty range.
-		 * @param newText A string.
-		 * @return A new text edit object.
+		 * @param position 插入的位置。
+		 * @param newText 插入的内容。
+		 * @return 一个新的文本操作对象。
 		 */
 		static insert(position: Position, newText: string): TextEdit;
 
 		/**
-		 * Utility to create a delete edit.
+		 * 创建一个删除操作。
 		 *
-		 * @param range A range.
-		 * @return A new text edit object.
+		 * @param range 需删除的文本范围。
+		 * @return 一个新的文本操作对象。
 		 */
 		static delete(range: Range): TextEdit;
 
 		/**
-		 * The range this edit applies to.
+		 * 这个编辑操作作用的文本范围。
 		 */
 		range: Range;
 
 		/**
-		 * The string this edit will insert.
+		 * 将要添加的新文本。
 		 */
 		newText: string;
 
 		/**
-		 * Create a new TextEdit.
+		 * 创建一个新的文本操作。
 		 *
-		 * @param range A range.
-		 * @param newText A string.
+		 * @param range 文本操作范围。
+		 * @param newText 字符串。
 		 */
 		constructor(range: Range, newText: string);
 	}
 	
 	/**
-	 * A universal resource identifier representing either a file on disk
-	 * or another resource, like untitled resources.
+     * 
+	 * 一种表示磁盘上的文件的通用资源标识符或其他资源，如命名的资源。
 	 */
 	export class Uri {
 
 		/**
-		 * Create an URI from a file system path. The [scheme](#Uri.scheme)
-		 * will be `file`.
+         * 通过文件系统的路径字符串创建一个Uri对象。创建的Uri的scheme属性为`file`。
 		 *
-		 * @param path A file system or UNC path.
-		 * @return A new Uri instance.
+		 * @param path 文件系统中文件(夹)的路径。
+		 * @return 一个Uri实例。
 		 */
 		static file(path: string): Uri;
 
 		/**
-		 * Create an URI from a string. Will throw if the given value is not
-		 * valid.
+         * 通过字符串创建一个Uri对象。
 		 *
-		 * @param value The string value of an Uri.
-		 * @return A new Uri instance.
+		 * @param value Uri的字符串值。
+		 * @return 一个新的Uri实现。
 		 */
 		static parse(value: string): Uri;
 
 		/**
-		 * Scheme is the `http` part of `http://www.msft.com/some/path?query#fragment`.
-		 * The part before the first colon.
+		 * `http://www.msft.com/some/path?query#fragment` 的`http` 部分。
+		 * 在第一个冒号之前的部分。
 		 */
 		scheme: string;
 
 		/**
-		 * Authority is the `www.msft.com` part of `http://www.msft.com/some/path?query#fragment`.
-		 * The part between the first double slashes and the next slash.
+		 * `http://www.msft.com/some/path?query#fragment` 的 `www.msft.com` 部分。
+		 * 在第一个双斜杠和下一个斜杠之间的部分。
 		 */
 		authority: string;
 
 		/**
-		 * Path is the `/some/path` part of `http://www.msft.com/some/path?query#fragment`.
+		 * `http://www.msft.com/some/path?query#fragment` 的 `/some/path` 部分。
 		 */
 		path: string;
 
 		/**
-		 * Query is the `query` part of `http://www.msft.com/some/path?query#fragment`.
+		 * `http://www.msft.com/some/path?query#fragment` 的 `query`部分。
 		 */
 		query: string;
 
 		/**
-		 * Fragment is the `fragment` part of `http://www.msft.com/some/path?query#fragment`.
+		 * `http://www.msft.com/some/path?query#fragment` 的 `fragment`部分。
 		 */
 		fragment: string;
 
 		/**
-		 * The string representing the corresponding file system path of this URI.
-		 *
-		 * Will handle UNC paths and normalize windows drive letters to lower-case. Also
-		 * uses the platform specific path separator. Will *not* validate the path for
-		 * invalid characters and semantics. Will *not* look at the scheme of this URI.
+		 * 这个URI对于在文件系统中的路径。
+		 * 
+		 * 将使用UNC路径并将系统盘符转换为小写。同时根据平台选择路径分隔符。
+		 * *不会*验证路径的语法或描述是否正确。*不会*寻找这个URI的scheme。
 		 */
 		fsPath: string;
 
 		/**
-		 * Returns a canonical representation of this URI. The representation and normalization
-		 * of a URI depends on the scheme.
+         * Uri的字符串表示形式。
 		 *
-		 * @returns A string that is the encoded version of this Uri.
+		 * @returns Uri解码的字符串。
 		 */
 		toString(): string;
 
 		/**
-		 * Returns a JSON representation of this Uri.
+         * Uri的JSON表示形式。
 		 *
-		 * @return An object.
+		 * @return JSON对象。
 		 */
 		toJSON(): any;
 	}
 	
-	/**
-	 * Namespace for dealing with commands. In short, a command is a function with a
-	 * unique identifier. The function is sometimes also called _command handler_.
-	 *
-	 * Commands can be added to the editor using the [registerCommand](#commands.registerCommand)
-	 * and [registerTextEditorCommand](#commands.registerTextEditorCommand) functions. Commands
-	 * can be executed [manually](#commands.executeCommand) or from a UI gesture. Those are:
-	 *
-	 * * palette - Use the `commands`-section in `package.json` to make a command show in
-	 * the [command palette](https://code.visualstudio.com/docs/editor/codebasics#_command-palette).
-	 * * keybinding - Use the `keybindings`-section in `package.json` to enable
-	 * [keybindings](https://code.visualstudio.com/docs/customization/keybindings#_customizing-shortcuts)
-	 * for your extension.
-	 *
-	 * Commands from other extensions and from the editor itself are accessible to an extension. However,
-	 * when invoking an editor command not all argument types are supported.
-	 *
-	 * This is a sample that registers a command handler and adds an entry for that command to the palette. First
-	 * register a command handler with the identfier `extension.sayHello`.
-	 * ```javascript
-	 * commands.registerCommand('extension.sayHello', () => {
-	 * 		window.showInformationMessage('Hello World!');
-	 * });
-	 * ```
-	 * Second, bind the command identfier to a title under which it will show in the palette (`package.json`).
-	 * ```json
-	 * {
-	 * "contributes": {
-	 * 		"commands": [{
-	 * 		"command": "extension.sayHello",
-	 * 		"title": "Hello World"
-	 * 	}]
-	 * }
-	 * ```
-	 */
 	export namespace commands {
 
 		/**
-		 * Registers a command that can be invoked via a keyboard shortcut,
-		 * a menu item, an action, or directly.
+         * 注册一个命令。
+		 * 
+         * 如果指定的命令id已经存在一个对应的注册方法,则会引发一个异常。
 		 *
-		 * Registering a command with an existing command identifier twice
-		 * will cause an error.
-		 *
-		 * @param command A unique identifier for the command.
-		 * @param callback A command handler function.
-		 * @param thisArg The `this` context used when invoking the handler function.
-		 * @return Disposable which unregisters this command on disposal.
+		 * @param command 命令的唯一标示。
+		 * @param callback 命令执行的回调方法。
+		 * @param thisArg 回调方法中的'this'对象。
+		 * @return Disposable 用于注销一个命令后销毁资源。
 		 */
 		export function registerCommand(command: string, callback: (...args: any[]) => any, thisArg?: any): Disposable;
-
-		/**
-		 * Registers a text editor command that can be invoked via a keyboard shortcut,
-		 * a menu item, an action, or directly.
+        
+        /**
+         * 注册一个文本编辑器命令。
+         * 
+         * 与(#commands.registerCommand)方法不同，仅当有激活的编辑器时，该命令才会被执行。
 		 *
-		 * Text editor commands are different from ordinary [commands](#commands.registerCommand) as
-		 * they only execute when there is an active editor when the command is called. Also, the
-		 * command handler of an editor command has access to the active editor and to an
-		 * [edit](#TextEditorEdit)-builder.
-		 *
-		 * @param command A unique identifier for the command.
-		 * @param callback A command handler function with access to an [editor](#TextEditor) and an [edit](#TextEditorEdit).
-		 * @param thisArg The `this` context used when invoking the handler function.
-		 * @return Disposable which unregisters this command on disposal.
+		 * @param command 命令的唯一标示。
+		 * @param callback 命令执行的回调方法。
+		 * @param thisArg 回调方法中的'this'对象。
+		 * @return Disposable 用于注销一个命令后销毁资源。
 		 */
-		// export function registerTextEditorCommand(command: string, callback: (textEditor: TextEditor, edit: TextEditorEdit) => void, thisArg?: any): Disposable;
+		export function registerTextEditorCommand(command: string, callback: (textEditor: TextEditor, edit: TextEditorEdit) => void, thisArg?: any): Disposable;
 
 		/**
-		 * Executes the command denoted by the given command identifier.
+         * 执行指定id的命令。
+         * 
+         * 命令的参数只允许 `string`, `boolean`, `number`, `undefined`, and `null` 这几个类型。
 		 *
-		 * When executing an editor command not all types are allowed to
-		 * be passed as arguments. Allowed are the primitive types `string`, `boolean`,
-		 * `number`, `undefined`, and `null`, as well as classes defined in this API.
-		 * There are no restrictions when executing commands that have been contributed
-		 * by extensions.
-		 *
-		 * @param command Identifier of the command to execute.
-		 * @param rest Parameters passed to the command function.
-		 * @return A thenable that resolves to the returned value of the given command. `undefined` when
-		 * the command handler function doesn't return anything.
+		 * @param command 命令的唯一标示。
+		 * @param rest 传递给回调方法的参数。
+		 * @return 对应给定命令返回值的许诺。
+		 *  如果这个命令的逻辑函数没有任何返回则返回`undefined`。
 		 */
 		export function executeCommand<T>(command: string, ...rest: any[]): Thenable<T>;
 
 		/**
-		 * Retrieve the list of all available commands.
+         * 获取所有可用命令的列表。
 		 *
-		 * @return Thenable that resolves to a list of command ids.
+		 * @return 包含所有命令id的Thenable对象。
 		 */
 		export function getCommands(): Thenable<string[]>;
 	}
 	
 	/**
-	 * Namespace for dealing with the current window of the editor. That is visible
-	 * and active editors, as well as, UI elements to show messages, selections, and
-	 * asking for user input.
+     * 当前窗口的命名空间。
 	 */
 	export namespace window {
 
 		/**
-		 * The currently active editor or undefined. The active editor is the one
-		 * that currently has focus or, when none has focus, the one that has changed
-		 * input most recently.
+         * 获取当前激活的编辑器。
 		 */
 		export let activeEditor: Editor;
 		
 		/**
-		 * The currently visible editors or an empty array.
+         * 当前可见的编辑器，如果没有则为空数组。
 		 */
 		export let visibleEditors: Editor[];
 		
 		/**
-		 * An [event](#Event) which fires when the [active editor](#window.activeTextEditor)
-		 * has changed.
+         * 当前激活的编辑器(#window.activeTextEditor)改变时派发。
 		 */
 		export const onDidChangeActiveEditor: Event<Editor>;
 
 		/**
-		 * An [event](#Event) which fires when the selection in an editor has changed.
+         * 文本编辑器的选中项改变时派发。
 		 */
 		export const onDidChangeTextEditorSelection: Event<TextEditorSelectionChangeEvent>;
 		
 		/**
-		 * Show the given document in a text editor. A [column](#ViewColumn) can be provided
-		 * to control where the editor is being shown. Might change the [active editor](#window.activeTextEditor).
+         * 显示指定文档的编辑器,此操作可能会改变激活的编辑器(#window.activeTextEditor)。
 		 *
-		 * @param document A text document to be shown.
-		 * @param column A view column in which the editor should be shown. The default is the [one](#ViewColumn.One), other values
-		 * are adjusted to be __Min(column, columnCount + 1)__.
-		 * @return A promise that resolves to an [editor](#TextEditor).
+		 * @param document 要显示的文档。
+		 * @return A promise that resolves to an [editor](#Editor)。
 		 */
 		export function showDocument(document: Document): Thenable<Editor>;
 		
 		/**
-		 * Shows a selection list.
+         * 显示一个选择列表的窗口。
 		 *
 		 * @param items An array of strings, or a promise that resolves to an array of strings.
 		 * @return A promise that resolves to the selection or undefined.
@@ -1064,7 +963,7 @@ declare namespace wing {
 		export function showQuickPick(items: string[] | Thenable<string[]>): Thenable<string>;
 
 		/**
-		 * Shows a selection list.
+		 * 显示一个选择列表的窗口。
 		 *
 		 * @param items An array of items, or a promise that resolves to an array of items.
 		 * @return A promise that resolves to the selected item or undefined.
@@ -1079,17 +978,16 @@ declare module 'wing' {
 
 
 /**
- * Thenable is a common denominator between ES6 promises, Q, jquery.Deferred, WinJS.Promise,
- * and others. This API makes no assumption about what promise libary is being used which
- * enables reusing existing code without migrating to a specific promise implementation. Still,
- * we recommend the use of native promises which are available in VS Code.
+ * Thenable 是一个类似 ES6 promises, Q, jquery.Deferred, WinJS.Promise,
+ * 以及其他的实现类。 任何可以重复使用的promise库都能够在该类中使用。
+ * 当然,我们推荐在vscode中使用原生的promise。
  */
 interface Thenable<R> {
 	/**
-	* Attaches callbacks for the resolution and/or rejection of the Promise.
-	* @param onfulfilled The callback to execute when the Promise is resolved.
-	* @param onrejected The callback to execute when the Promise is rejected.
-	* @returns A Promise for the completion of which ever callback is executed.
+	* 链接成功和/或失败的回调函数到这个promise
+	* @param onfulfilled 正确完成时的回调函数。
+	* @param onrejected 遇到错误时的回调函数。
+	* @returns 取决于具体执行了哪一个回调函数。
 	*/
 	then<TResult>(onfulfilled?: (value: R) => TResult | Thenable<TResult>, onrejected?: (reason: any) => TResult | Thenable<TResult>): Thenable<TResult>;
 	then<TResult>(onfulfilled?: (value: R) => TResult | Thenable<TResult>, onrejected?: (reason: any) => void): Thenable<TResult>;
@@ -1098,22 +996,22 @@ interface Thenable<R> {
 // ---- ES6 promise ------------------------------------------------------
 
 /**
- * Represents the completion of an asynchronous operation.
+ * 代表一个异步操作的完成情况
  */
 interface Promise<T> extends Thenable<T> {
 	/**
-	* Attaches callbacks for the resolution and/or rejection of the Promise.
-	* @param onfulfilled The callback to execute when the Promise is resolved.
-	* @param onrejected The callback to execute when the Promise is rejected.
-	* @returns A Promise for the completion of which ever callback is executed.
+	* 链接成功和/或失败的回调函数到这个promise
+	* @param onfulfilled 正确完成时的回调函数。
+	* @param onrejected 遇到错误时的回调函数。
+	* @returns 取决于具体执行了哪一个回调函数。
 	*/
 	then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => TResult | Thenable<TResult>): Promise<TResult>;
 	then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => void): Promise<TResult>;
 
 	/**
-	 * Attaches a callback for only the rejection of the Promise.
-	 * @param onrejected The callback to execute when the Promise is rejected.
-	 * @returns A Promise for the completion of the callback.
+	 * 仅为这个Promise的onrejected方法添加一个回调函数。
+	 * @param onrejected 当这个Promise执行onrejected时的回调函数
+	 * @returns 这个回调对应的Promise
 	 */
 	catch(onrejected?: (reason: any) => T | Thenable<T>): Promise<T>;
 
@@ -1121,59 +1019,55 @@ interface Promise<T> extends Thenable<T> {
 }
 
 interface PromiseConstructor {
-	// /**
-	//   * A reference to the prototype.
-	//   */
-	// prototype: Promise<any>;
 
 	/**
-	 * Creates a new Promise.
-	 * @param executor A callback used to initialize the promise. This callback is passed two arguments:
-	 * a resolve callback used to resolve the promise with a value or the result of another promise,
-	 * and a reject callback used to reject the promise with a provided reason or error.
+	 * 创建一个Promise。
+	 * @param executor 用于初始化这个Promise的回调函数。这个回调函数含有2个参数:
+	 * resolve回调函数用于接收一个值或上一个Promise的结果。
+	 * reject回调函数用于接收错误信息或错误原因。
 	 */
 	new <T>(executor: (resolve: (value?: T | Thenable<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
 
 	/**
-	 * Creates a Promise that is resolved with an array of results when all of the provided Promises
-	 * resolve, or rejected when any Promise is rejected.
-	 * @param values An array of Promises.
-	 * @returns A new Promise.
+	 * 创建一个Promise，若其中的所有Promise项全部执行resolve，则执行resolve，
+	 * 否则执行 rejected。
+	 * @param values 一组Promise。
+	 * @returns 一个新的Promise。
 	 */
 	all<T>(values: Array<T | Thenable<T>>): Promise<T[]>;
 
 	/**
-	 * Creates a Promise that is resolved or rejected when any of the provided Promises are resolved
-	 * or rejected.
-	 * @param values An array of Promises.
-	 * @returns A new Promise.
+	 * 创建一个Promise，传入的Promise总若任何一个执行了reject或resolve，则执行
+	 * 该对应的reject或resolve.
+	 * @param values 一组Promise。
+	 * @returns 一个新的Promise。
 	 */
 	race<T>(values: Array<T | Thenable<T>>): Promise<T>;
 
 	/**
-	 * Creates a new rejected promise for the provided reason.
-	 * @param reason The reason the promise was rejected.
-	 * @returns A new rejected Promise.
+	 * 创建一个仅包含reject方法的Promise。
+	 * @param reason 调用reject时传入的参数。
+	 * @returns 一个仅包含reject方法的Promise。
 	 */
 	reject(reason: any): Promise<void>;
 
 	/**
-	 * Creates a new rejected promise for the provided reason.
-	 * @param reason The reason the promise was rejected.
-	 * @returns A new rejected Promise.
+	 * 创建一个仅包含reject方法的Promise。
+	 * @param reason 调用reject时传入的参数。
+	 * @returns 一个仅包含reject方法的Promise。
 	 */
 	reject<T>(reason: any): Promise<T>;
 
 	/**
-	  * Creates a new resolved promise for the provided value.
-	  * @param value A promise.
+	  * 创建一个仅包含resolve方法的Promise。
+	  * @param value 一个Promise。
 	  * @returns A promise whose internal state matches the provided promise.
 	  */
 	resolve<T>(value: T | Thenable<T>): Promise<T>;
 
 	/**
-	 * Creates a new resolved promise.
-	 * @returns A resolved promise.
+	 * 创建一个仅包含resolve方法的Promise。
+	 * @returns 一个仅包含resolve方法的Promise。
 	 */
 	resolve(): Promise<void>;
 
