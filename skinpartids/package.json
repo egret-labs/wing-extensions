@@ -16,7 +16,7 @@
 		"url": "https://github.com/egret-labs/wing-extensions.git"
 	},
 	"activationEvents": [
-		"onCommands:extension.copyIds"
+		"onCommand:extension.copyIds"
 	],
 	"engines": {
 		"wing": "^2.5.0"
