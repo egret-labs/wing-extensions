@@ -41,8 +41,6 @@
 
 自定义快捷键 `keybinding`。可以自定义命令执行的按键绑定。
 
-Contributing a key binding will cause the Default Keyboard Shortcuts to display your rule, and every UI representation of the command will now show the key binding you have added. And, of course, when the user presses the key combination the command will be invoked.
-
 >**Note:** 可以快捷键定义不同操作系统平台的快捷键。
 
 >**Note:** 当命令通过快捷键或者命令面板被执行时, 将派发 [`activationEvent`](/.doc/activation-events.md) `onCommand:${command}`.
