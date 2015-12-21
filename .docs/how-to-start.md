@@ -1,6 +1,6 @@
 # EgretWing插件项目
 
-EgretWing插件项目基于`NodeJS`，可以使用 `TypeScript` 语言编写。EgretWing提供一套 API 接口，允许开发者自定义部分EgretWing的功能，甚至添加没有的功能。
+EgretWing插件项目基于`NodeJS`，可以使用 `TypeScript` 语言编写。EgretWing提供一套 API 接口，允许开发者自定义部分EgretWing的功能。
 
 ## 必要开发环境
 
