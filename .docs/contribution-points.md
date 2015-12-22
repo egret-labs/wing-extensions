@@ -64,19 +64,19 @@
 
 操作系统 | 组合键
 ---- | ---------
-MACOS X | `kbstyle(ctrl+)`, `kbstyle(shift+)`, `kbstyle(alt+)`, `kbstyle(cmd+)`
-Windows | `kbstyle(ctrl+)`, `kbstyle(shift+)`, `kbstyle(alt+)`, `kbstyle(win+)`
+MACOS X | `ctrl+`, `shift+`, `alt+`, `cmd+`
+Windows | `ctrl+`, `shift+`, `alt+`, `win+`
 
 >**Note:** 特殊的可以使用 `ctrlcmd` 表示windows下的`ctrl`, mac下的`cmd`
 
 
 其他按键表示如下：
 
-* `kbstyle(f1-f15)`, `kbstyle(a-z)`, `kbstyle(0-9)`
-* ``kbstyle(`)``, `kbstyle(-)`, `kbstyle(=)`, `kbstyle([)`, `kbstyle(])`, `kbstyle(\)`, `kbstyle(;)`, `kbstyle(')`, `kbstyle(,)`, `kbstyle(.)`, `kbstyle(/)`
-* `kbstyle(left)`, `kbstyle(up)`, `kbstyle(right)`, `kbstyle(down)`, `kbstyle(pageup)`, `kbstyle(pagedown)`, `kbstyle(end)`, `kbstyle(home)`
-* `kbstyle(tab)`, `kbstyle(enter)`, `kbstyle(escape)`, `kbstyle(space)`, `kbstyle(backspace)`, `kbstyle(delete)`
-* `kbstyle(pausebreak)`, `kbstyle(capslock)`, `kbstyle(insert)`
+* `f1-f15`, `a-z`, `0-9`
+* `` ` ``, `-`, `=`, `[`, `]`, `\`, `;`, `'`, `,`, `.`, `/`
+* `left`, `up`, `right`, `down`, `pageup`, `pagedown`, `end`, `home`
+* `tab`, `enter`, `escape`, `space`, `backspace`, `delete`
+* `pausebreak`, `capslock`, `insert`
 
 
 使用空格分割的按键序列，例如(ctrl+k ctrl+c)，表示先按ctrl+k，再按ctrl+c 才能触发该快捷键。
