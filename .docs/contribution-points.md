@@ -41,7 +41,7 @@
 
 自定义快捷键 `keybinding`。可以自定义命令执行的按键绑定。
 
->**Note:** 可以快捷键定义不同操作系统平台的快捷键。
+>**Note:** 可以定义不同操作系统平台的快捷键。
 
 >**Note:** 当命令通过快捷键或者命令面板被执行时, 将派发 [`activationEvent`](/.doc/activation-events.md) `onCommand:${command}`.
 
@@ -104,7 +104,7 @@ Windows | `ctrl+`, `shift+`, `alt+`, `win+`
 
 ### 例子
 
-定义命令 `"extension.sayHello"` 的windows下快捷键为 `kbstyle(Ctrl+F1)`，mac下快捷键为 `kbstyle(Cmd+Shift+F1)` :
+定义命令 `"extension.sayHello"` 的windows下快捷键为 `Ctrl+F1`，mac下快捷键为 `Cmd+Shift+F1` :
 
 ```json
 ...
