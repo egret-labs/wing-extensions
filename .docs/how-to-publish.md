@@ -8,7 +8,15 @@
 
 然后打开wing，点击 帮助--插件管理器 菜单。 
 
-选择插件解压后的文件夹安装 或者 直接将解压后的文件夹复制到wing安装目录下的 `plugins/com.egret.apiextension/extensions` 文件夹中。
+选择插件解压后的文件夹安装。
+
+windows默认的用户插件安装目录为：
+
+	%appdata%/EgretWing/Local Store/extensions
+
+mac默认的用户插件安装目录为：
+
+	~/Library/Application Support/EgretWing/Local Store/extensions
 
 重启wing即可。
 
