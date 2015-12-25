@@ -4,11 +4,11 @@
 
 ## 安装插件
 
-首先在 [插件列表](https://github.com/egret-labs/wing-extensions#插件列表) 中下载需要的插件zip包，先解压。
+首先在 [插件列表](https://github.com/egret-labs/wing-extensions#插件列表) 中下载需要的插件zip包。
 
 然后打开wing，点击 帮助--插件管理器 菜单。 
 
-选择插件解压后的文件夹安装。
+选择插件zip包安装。
 
 windows默认的用户插件安装目录为：
 
