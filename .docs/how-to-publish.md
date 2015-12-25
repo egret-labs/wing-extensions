@@ -2,7 +2,7 @@
 
 目前发布相关的工具和平台还在开发中。如果开发者要分享插件，建议给本项目提交Pull requests。我们审核过后会添加到插件列表中。
 
->Note: zip下必须有一个extension的子文件夹，并将所有插件所需要的文件置于extension文件夹下。
+>Note: zip安装包下必须有一个extension的子文件夹，并将所有插件所需要的文件置于extension文件夹下。
 
 
 ## 安装插件
