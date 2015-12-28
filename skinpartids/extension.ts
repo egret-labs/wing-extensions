@@ -22,7 +22,7 @@ function copyIds() {
     let result = findIds(content);
 
     if (result) {
-        clipboard.copy(findIds(content), () => {
+        clipboard.copy(result, () => {
             console.log("已成功解析exml中id,并复制对应的ts代码到剪切板,可使用粘贴操作到指定位置.");
         });
     } else {
