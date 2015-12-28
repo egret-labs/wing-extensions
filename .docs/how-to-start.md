@@ -60,6 +60,8 @@ EgretWing插件项目基于`NodeJS`，可以使用 `TypeScript` 语言编写。E
 ├── tsconfig.json         		// ts编译配置
 ```
 
+- `wing.d.ts` 是插件API定义， 请从 [`api列表`](/.apis/) 获取对应版本的API定义。
+
 - `package.json` 是插件的描述文件， 详情参考： [extension-manifest.md](/.docs/extension-manifest.md) 
 
 - `tsconfig.json` 是 `typescript` 的编译配置文件， 详情参考： [tsconfig.json](https://github.com/Microsoft/TypeScript/wiki/tsconfig.json "tsconfig.json")
