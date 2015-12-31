@@ -985,16 +985,14 @@ declare module 'wing' {
 
 
 /**
- * Thenable 是一个类似 ES6 promises, Q, jquery.Deferred, WinJS.Promise,
- * 以及其他的实现类。 任何可以重复使用的promise库都能够在该类中使用。
- * 当然,我们推荐在vscode中使用原生的promise。
+ * Thenable 是提供一个then方法，用来处理操作成功或者失败的回调。
  */
 interface Thenable<R> {
 	/**
-	* 链接成功和/或失败的回调函数到这个promise
-	* @param onfulfilled 正确完成时的回调函数。
-	* @param onrejected 遇到错误时的回调函数。
-	* @returns 取决于具体执行了哪一个回调函数。
+	* 操作成功或者失败的回调
+	* @param onfulfilled 操作完成时的回调函数。
+	* @param onrejected 操作失败时的回调函数。
+	* @returns 基于回调函数的Thenable的对象。
 	*/
 	then<TResult>(onfulfilled?: (value: R) => TResult | Thenable<TResult>, onrejected?: (reason: any) => TResult | Thenable<TResult>): Thenable<TResult>;
 	then<TResult>(onfulfilled?: (value: R) => TResult | Thenable<TResult>, onrejected?: (reason: any) => void): Thenable<TResult>;
@@ -1002,83 +1000,29 @@ interface Thenable<R> {
 
 // ---- ES6 promise ------------------------------------------------------
 
-/**
- * 代表一个异步操作的完成情况
- */
-interface Promise<T> extends Thenable<T> {
-	/**
-	* 链接成功和/或失败的回调函数到这个promise
-	* @param onfulfilled 正确完成时的回调函数。
-	* @param onrejected 遇到错误时的回调函数。
-	* @returns 取决于具体执行了哪一个回调函数。
-	*/
-	then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => TResult | Thenable<TResult>): Promise<TResult>;
-	then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => void): Promise<TResult>;
+// interface Promise<T> extends Thenable<T> {
 
-	/**
-	 * 仅为这个Promise的onrejected方法添加一个回调函数。
-	 * @param onrejected 当这个Promise执行onrejected时的回调函数
-	 * @returns 这个回调对应的Promise
-	 */
-	catch(onrejected?: (reason: any) => T | Thenable<T>): Promise<T>;
+// 	then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => TResult | Thenable<TResult>): Promise<TResult>;
+// 	then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => void): Promise<TResult>;
 
-	// [Symbol.toStringTag]: string;
-}
+// 	catch(onrejected?: (reason: any) => T | Thenable<T>): Promise<T>;
+// }
 
-interface PromiseConstructor {
+// interface PromiseConstructor {
 
-	/**
-	 * 创建一个Promise。
-	 * @param executor 用于初始化这个Promise的回调函数。这个回调函数含有2个参数:
-	 * resolve回调函数用于接收一个值或上一个Promise的结果。
-	 * reject回调函数用于接收错误信息或错误原因。
-	 */
-	new <T>(executor: (resolve: (value?: T | Thenable<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
+// 	new <T>(executor: (resolve: (value?: T | Thenable<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
 
-	/**
-	 * 创建一个Promise，若其中的所有Promise项全部执行resolve，则执行resolve，
-	 * 否则执行 rejected。
-	 * @param values 一组Promise。
-	 * @returns 一个新的Promise。
-	 */
-	all<T>(values: Array<T | Thenable<T>>): Promise<T[]>;
+// 	all<T>(values: Array<T | Thenable<T>>): Promise<T[]>;
 
-	/**
-	 * 创建一个Promise，传入的Promise总若任何一个执行了reject或resolve，则执行
-	 * 该对应的reject或resolve.
-	 * @param values 一组Promise。
-	 * @returns 一个新的Promise。
-	 */
-	race<T>(values: Array<T | Thenable<T>>): Promise<T>;
+// 	race<T>(values: Array<T | Thenable<T>>): Promise<T>;
 
-	/**
-	 * 创建一个仅包含reject方法的Promise。
-	 * @param reason 调用reject时传入的参数。
-	 * @returns 一个仅包含reject方法的Promise。
-	 */
-	reject(reason: any): Promise<void>;
+// 	reject(reason: any): Promise<void>;
 
-	/**
-	 * 创建一个仅包含reject方法的Promise。
-	 * @param reason 调用reject时传入的参数。
-	 * @returns 一个仅包含reject方法的Promise。
-	 */
-	reject<T>(reason: any): Promise<T>;
+// 	reject<T>(reason: any): Promise<T>;
 
-	/**
-	  * 创建一个仅包含resolve方法的Promise。
-	  * @param value 一个Promise。
-	  * @returns A promise whose internal state matches the provided promise.
-	  */
-	resolve<T>(value: T | Thenable<T>): Promise<T>;
+// 	resolve<T>(value: T | Thenable<T>): Promise<T>;
 
-	/**
-	 * 创建一个仅包含resolve方法的Promise。
-	 * @returns 一个仅包含resolve方法的Promise。
-	 */
-	resolve(): Promise<void>;
+// 	resolve(): Promise<void>;
+// }
 
-	// [Symbol.species]: Function;
-}
-
-declare var Promise: PromiseConstructor;
+// declare var Promise: PromiseConstructor;
