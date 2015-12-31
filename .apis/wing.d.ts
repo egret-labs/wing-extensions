@@ -12,7 +12,7 @@ declare namespace wing {
 	 * 表示一行文本
 	 */
 	export interface TextLine {
-        
+		
 		/**
 		 * 从0开始的行数
 		 *
@@ -50,7 +50,7 @@ declare namespace wing {
 
 		/**
 		 * 该行是否仅包括非空, 当该值为true时，等效于
-         * TextLine.firstNonWhitespaceCharacterIndex === TextLine.text.length
+		 * TextLine.firstNonWhitespaceCharacterIndex === TextLine.text.length
 		 *
 		 * @readonly
 		 */
@@ -130,8 +130,8 @@ declare namespace wing {
 
 		/**
 		 * 返回指定Position位置的TextLine。
-         * 
-         * 此方法会自动调整position为有效的Position。
+		 * 
+		 * 此方法会自动调整position为有效的Position。
 		 *
 		 * @see [TextDocument.lineAt](#TextDocument.lineAt)
 		 * @param position 位置。
@@ -140,17 +140,17 @@ declare namespace wing {
 		lineAt(position: Position): TextLine;
 
 		/**
-         * 返回指定Position位置在文本文档中的偏移位置。
+		 * 返回指定Position位置在文本文档中的偏移位置。
 		 *
-         * 此方法会自动调整position为有效的Position。
-         * 
+		 * 此方法会自动调整position为有效的Position。
+		 * 
 		 * @param position 位置。
 		 * @return 从0开始的索引位置。
 		 */
 		offsetAt(position: Position): number;
 
 		/**
-         * 返回指定偏移位置对应的Position。
+		 * 返回指定偏移位置对应的Position。
 		 *
 		 * @param offset 从0开始的索引位置。
 		 * @return 一个Position实例。
@@ -158,9 +158,9 @@ declare namespace wing {
 		positionAt(offset: number): Position;
 
 		/**
-         * 返回指定Range范围对应的文本字符串。
-         * 
-         * 此方法会自动调整range为有效的Range对象。
+		 * 返回指定Range范围对应的文本字符串。
+		 * 
+		 * 此方法会自动调整range为有效的Range对象。
 		 *
 		 * @param range 范围，如果不传入该参数，则获取所有的文本数据。
 		 * @return 文本字符串。
@@ -168,9 +168,9 @@ declare namespace wing {
 		getText(range?: Range): string;
 
 		/**
-         * 返回指定Position位置单词的Range。
-         * 
-         * 此方法会自动调整position为有效的Position
+		 * 返回指定Position位置单词的Range。
+		 * 
+		 * 此方法会自动调整position为有效的Position
 		 *
 		 * @param position 位置。
 		 * @return 一个Range实例。
@@ -178,7 +178,7 @@ declare namespace wing {
 		getWordRangeAtPosition(position: Position): Range;
 
 		/**
-         * 将一个Range转换成该文本文档有效的Range对象。
+		 * 将一个Range转换成该文本文档有效的Range对象。
 		 *
 		 * @param range 一个Range实例。
 		 * @return 传入的Range或者已经被调整过的Range。
@@ -194,40 +194,40 @@ declare namespace wing {
 		validatePosition(position: Position): Position;
 	}
 	
-    /**
-     * 编辑器类型。
-     */
+	/**
+	 * 编辑器类型。
+	 */
 	export enum EditorType {
-        /**
-         * 基本编辑器。在EgretWing的文档窗口中，每一个窗口页都是一个编辑器。
-         */
+		/**
+		 * 基本编辑器。在EgretWing的文档窗口中，每一个窗口页都是一个编辑器。
+		 */
 		BaseEditor = 1,
-        /**
-         * 文本编辑器。比如ts编辑器，json编辑器。注意：exml编辑器不属于TextEditor，因为该编辑器
-         * 不仅包含文本编辑视图，还包含一个设计视图。同理RES之类的json文件编辑也不是单纯的文本编辑器。
-         */
+		/**
+		 * 文本编辑器。比如ts编辑器，json编辑器。注意：exml编辑器不属于TextEditor，因为该编辑器
+		 * 不仅包含文本编辑视图，还包含一个设计视图。同理RES之类的json文件编辑也不是单纯的文本编辑器。
+		 */
 		TextEditor = 3
 	}
 	
-    /**
-     * 编辑器。在EgretWing的文档窗口中，每一个窗口页都是一个编辑器。
-     */
+	/**
+	 * 编辑器。在EgretWing的文档窗口中，每一个窗口页都是一个编辑器。
+	 */
 	export interface Editor {
 		/**
 		 * 关联到该编辑器的文档。这个文档将会和这个编辑器含有相同的生命周期。
 		 */
 		document: Document;
 		
-        /**
-         * 判断是否是指定类型的编辑器。
-         * @param type 编辑器类型，使用wing.EditorType中的常量。
-         */
+		/**
+		 * 判断是否是指定类型的编辑器。
+		 * @param type 编辑器类型，使用wing.EditorType中的常量。
+		 */
 		isTypeOf(type: EditorType): boolean;
 	}
 	
 	/**
 	 * 文本编辑器。比如ts编辑器，json编辑器。注意：exml编辑器不属于TextEditor，因为该编辑器
-     * 不仅包含文本编辑视图，还包含一个设计视图。同理RES之类的json文件编辑也不是单纯的文本编辑器。
+	 * 不仅包含文本编辑视图，还包含一个设计视图。同理RES之类的json文件编辑也不是单纯的文本编辑器。
 	 */
 	export interface TextEditor extends Editor {
 		/**
@@ -262,7 +262,7 @@ declare namespace wing {
 	}
 	
 	/**
-     * 表示一个文本编辑操作对象。该对象定义了一系列的文本编辑操作方法来改变编辑器中的文本数据。
+	 * 表示一个文本编辑操作对象。该对象定义了一系列的文本编辑操作方法来改变编辑器中的文本数据。
 	 */
 	export interface TextEditorEdit {
 		/**
@@ -313,7 +313,7 @@ declare namespace wing {
 		constructor(line: number, character: number);
 
 		/**
-         * 该位置是否在指定位置之前。
+		 * 该位置是否在指定位置之前。
 		 *
 		 * @param other 要比较的位置。
 		 * @return 如果该位置在指定位置之前，则返回`true`，否则返回`false`。
@@ -329,7 +329,7 @@ declare namespace wing {
 		isBeforeOrEqual(other: Position): boolean;
 
 		/**
-         * 该位置是否在指定位置之后。
+		 * 该位置是否在指定位置之后。
 		 *
 		 * @param other 要比较的位置。
 		 * @return 如果该位置在指定位置之后，则返回`true`，否则返回`false`。
@@ -379,7 +379,7 @@ declare namespace wing {
 	}
 
 	/**
-     * 表示两个一段文本范围。start位置在end位置之前或者相同。
+	 * 表示两个一段文本范围。start位置在end位置之前或者相同。
 	 */
 	export class Range {
 
@@ -501,7 +501,7 @@ declare namespace wing {
 		constructor(anchorLine: number, anchorCharacter: number, activeLine: number, activeCharacter: number);
 
 		/**
-         * 是否是反向选择。等效于[active](#Selection.active).isBefore([anchor](#Selection.anchor))。
+		 * 是否是反向选择。等效于[active](#Selection.active).isBefore([anchor](#Selection.anchor))。
 		 */
 		isReversed: boolean;
 	}
@@ -596,20 +596,20 @@ declare namespace wing {
 		 * @readonly
 		 */
 		export let documents: Document[];
-        
-        /**
-         * 当前激活的项目。
-         */
-        export let activeProject: Project;
-        
-        /**
-         * 保存所有未保存的文档。
-         */
-        export function saveAll(): Thenable<Boolean>;
 		
 		/**
-         * 打开指定uri的一个文档数据。如果该位置的文档已经被打开，则什么也不做。
-         * 如果打开成功则会抛出[open document](#workspace.onDidOpenDocument)-event。
+		 * 当前激活的项目。
+		 */
+		export let activeProject: Project;
+		
+		/**
+		 * 保存所有未保存的文档。
+		 */
+		export function saveAll(): Thenable<Boolean>;
+		
+		/**
+		 * 打开指定uri的一个文档数据。如果该位置的文档已经被打开，则什么也不做。
+		 * 如果打开成功则会抛出[open document](#workspace.onDidOpenDocument)-event。
 		 * 
 		 * 通过 [uri](#Uri) 打开指定的文档. 目前只支持打开 `schemes` 为 file 的文档资源。
 		 *
@@ -628,14 +628,14 @@ declare namespace wing {
 		 */
 		export function openDocument(fileName: string): Thenable<Document>;
 		
-        /**
-         * 获取所有项目。
-         */
+		/**
+		 * 获取所有项目。
+		 */
 		export function getProjects(): Project[];
 		
-        /**
-         * 获取指定名称的项目。
-         */
+		/**
+		 * 获取指定名称的项目。
+		 */
 		export function getProject(name: string): Project;
 		
 		/**
@@ -657,43 +657,43 @@ declare namespace wing {
 		 * 当 [text document](#Document) 被保存到硬盘时，抛出一个的对应事件。
 		 */
 		export const onDidSaveDocument: Event<Document>;
-        
-        /**
-         * 当添加了一个项目时，抛出该事件。
-         */
-        export const onDidAddProject: Event<Project>;
-        /**
-         * 当删除了一个项目时，抛出该事件。
-         */
-        export const onDidRemoveProject: Event<Project>;
-        /**
-         * 当前激活项目改变时，抛出该事件。
-         */
-        export const onDidChangeActiveProject: Event<Project>;
+		
+		/**
+		 * 当添加了一个项目时，抛出该事件。
+		 */
+		export const onDidAddProject: Event<Project>;
+		/**
+		 * 当删除了一个项目时，抛出该事件。
+		 */
+		export const onDidRemoveProject: Event<Project>;
+		/**
+		 * 当前激活项目改变时，抛出该事件。
+		 */
+		export const onDidChangeActiveProject: Event<Project>;
 	}
 	
-    /**
-     * 表示一个项目。
-     */
+	/**
+	 * 表示一个项目。
+	 */
 	export interface Project {
-        /**
-         * 项目的的Uri。
-         */
+		/**
+		 * 项目的的Uri。
+		 */
 		uri: Uri;
 		
-        /**
-         * 项目名称。
-         */
+		/**
+		 * 项目名称。
+		 */
 		name: string;
-        
-        /**
-         * 项目路径。
-         */
+		
+		/**
+		 * 项目路径。
+		 */
 		path: string;
-        
-        /**
-         * 将指定路径转换相对于项目的相对路径。
-         */
+		
+		/**
+		 * 将指定路径转换相对于项目的相对路径。
+		 */
 		asRelativePath(pathOrUri: string | Uri): string;
 	}
 	
@@ -811,13 +811,13 @@ declare namespace wing {
 	}
 	
 	/**
-     * 
+	 * 
 	 * 一种表示磁盘上的文件的通用资源标识符或其他资源，如命名的资源。
 	 */
 	export class Uri {
 
 		/**
-         * 通过文件系统的路径字符串创建一个Uri对象。创建的Uri的scheme属性为`file`。
+		 * 通过文件系统的路径字符串创建一个Uri对象。创建的Uri的scheme属性为`file`。
 		 *
 		 * @param path 文件系统中文件(夹)的路径。
 		 * @return 一个Uri实例。
@@ -825,7 +825,7 @@ declare namespace wing {
 		static file(path: string): Uri;
 
 		/**
-         * 通过字符串创建一个Uri对象。
+		 * 通过字符串创建一个Uri对象。
 		 *
 		 * @param value Uri的字符串值。
 		 * @return 一个新的Uri实现。
@@ -868,14 +868,14 @@ declare namespace wing {
 		fsPath: string;
 
 		/**
-         * Uri的字符串表示形式。
+		 * Uri的字符串表示形式。
 		 *
 		 * @returns Uri解码的字符串。
 		 */
 		toString(): string;
 
 		/**
-         * Uri的JSON表示形式。
+		 * Uri的JSON表示形式。
 		 *
 		 * @return JSON对象。
 		 */
@@ -885,9 +885,9 @@ declare namespace wing {
 	export namespace commands {
 
 		/**
-         * 注册一个命令。
+		 * 注册一个命令。
 		 * 
-         * 如果指定的命令id已经存在一个对应的注册方法,则会引发一个异常。
+		 * 如果指定的命令id已经存在一个对应的注册方法,则会引发一个异常。
 		 *
 		 * @param command 命令的唯一标示。
 		 * @param callback 命令执行的回调方法。
@@ -895,11 +895,11 @@ declare namespace wing {
 		 * @return Disposable 用于注销一个命令后销毁资源。
 		 */
 		export function registerCommand(command: string, callback: (...args: any[]) => any, thisArg?: any): Disposable;
-        
-        /**
-         * 注册一个文本编辑器命令。
-         * 
-         * 与(#commands.registerCommand)方法不同，仅当有激活的编辑器时，该命令才会被执行。
+		
+		/**
+		 * 注册一个文本编辑器命令。
+		 * 
+		 * 与(#commands.registerCommand)方法不同，仅当有激活的编辑器时，该命令才会被执行。
 		 *
 		 * @param command 命令的唯一标示。
 		 * @param callback 命令执行的回调方法。
@@ -909,9 +909,9 @@ declare namespace wing {
 		export function registerTextEditorCommand(command: string, callback: (textEditor: TextEditor, edit: TextEditorEdit) => void, thisArg?: any): Disposable;
 
 		/**
-         * 执行指定id的命令。
-         * 
-         * 命令的参数只允许 `string`, `boolean`, `number`, `undefined`, and `null` 这几个类型。
+		 * 执行指定id的命令。
+		 * 
+		 * 命令的参数只允许 `string`, `boolean`, `number`, `undefined`, and `null` 这几个类型。
 		 *
 		 * @param command 命令的唯一标示。
 		 * @param rest 传递给回调方法的参数。
@@ -921,7 +921,7 @@ declare namespace wing {
 		export function executeCommand<T>(command: string, ...rest: any[]): Thenable<T>;
 
 		/**
-         * 获取所有可用命令的列表。
+		 * 获取所有可用命令的列表。
 		 *
 		 * @return 包含所有命令id的Thenable对象。
 		 */
@@ -929,32 +929,32 @@ declare namespace wing {
 	}
 	
 	/**
-     * 当前窗口的命名空间。
+	 * 当前窗口的命名空间。
 	 */
 	export namespace window {
 
 		/**
-         * 获取当前激活的编辑器。
+		 * 获取当前激活的编辑器。
 		 */
 		export let activeEditor: Editor;
 		
 		/**
-         * 当前可见的编辑器，如果没有则为空数组。
+		 * 当前可见的编辑器，如果没有则为空数组。
 		 */
 		export let visibleEditors: Editor[];
 		
 		/**
-         * 当前激活的编辑器(#window.activeTextEditor)改变时派发。
+		 * 当前激活的编辑器(#window.activeTextEditor)改变时派发。
 		 */
 		export const onDidChangeActiveEditor: Event<Editor>;
 
 		/**
-         * 文本编辑器的选中项改变时派发。
+		 * 文本编辑器的选中项改变时派发。
 		 */
 		export const onDidChangeTextEditorSelection: Event<TextEditorSelectionChangeEvent>;
 		
 		/**
-         * 显示指定文档的编辑器,此操作可能会改变激活的编辑器(#window.activeTextEditor)。
+		 * 显示指定文档的编辑器,此操作可能会改变激活的编辑器(#window.activeTextEditor)。
 		 *
 		 * @param document 要显示的文档。
 		 * @return A promise that resolves to an [editor](#Editor)。
@@ -962,7 +962,7 @@ declare namespace wing {
 		export function showDocument(document: Document): Thenable<Editor>;
 		
 		/**
-         * 显示一个选择列表的窗口。
+		 * 显示一个选择列表的窗口。
 		 *
 		 * @param items An array of strings, or a promise that resolves to an array of strings.
 		 * @return A promise that resolves to the selection or undefined.
