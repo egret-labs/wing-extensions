@@ -1,5 +1,5 @@
 /*
-	EgretWing插件API定义文件，对应版本 2.5.1
+	EgretWing插件API定义文件，对应版本 2.5.0
 */
 
 declare namespace wing {
@@ -252,13 +252,6 @@ declare namespace wing {
 		 * @return 包含是否操作成功参数的Thenable对象。
 		 */
 		edit(callback: (editBuilder: TextEditorEdit) => void): Thenable<boolean>;
-		
-		/**
-		 * 显示指定Range的文本
-		 *
-		 * @param range 要跳转到的Range。如果为null，则默认为选中当前选中位置。
-		 */
-		revealRange(range?: Range): void;
 	}
 	
 	/**
@@ -694,7 +687,7 @@ declare namespace wing {
         /**
          * 将指定路径转换相对于项目的相对路径。
          */
-		asRelativePath(pathOrUri: string | Uri): string;
+		asRelativePath(pathOrUri: string|Uri): string;
 	}
 	
 	/**
@@ -881,7 +874,7 @@ declare namespace wing {
 		 */
 		toJSON(): any;
 	}
-
+	
 	export namespace commands {
 
 		/**
