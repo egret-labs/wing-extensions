@@ -1,0 +1,34 @@
+{
+  "name": "extensiondemo",
+  "displayName": "ExtensionDemo",
+  "description": "An Extension Demo For Egret Wing.",
+  "version": "0.0.1",
+  "publisher": "egret",
+  "engines": {
+    "wing": "^3.0.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.demo"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.demo",
+        "title": "Extension Demo"
+      }
+    ]
+  },
+  "scripts": {
+    "wing:prepublish": "node ./node_modules/egretwing/bin/compile",
+    "compile": "node ./node_modules/egretwing/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/egretwing/bin/install"
+  },
+  "devDependencies": {
+    "egretwing": "^3.0.0",
+    "typescript": "^1.7.5"
+  }
+}
