@@ -1,9 +1,9 @@
 {
-	"name": "TextTools",
+	"name": "texttools",
 	"description": "Text replacement functions e.g. change case, reverse and ASCII Art.",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"publisher": "egret",
-	"categories":[
+	"categories": [
 		"Other"
 	],
 	"icon": "images/icon.png",
@@ -19,7 +19,7 @@
 		"onCommand:extension.textFunctions"
 	],
 	"engines": {
-		"wing": "^2.5.0"
+		"wing": "^3.0.0"
 	},
 	"main": "./out/extension",
 	"contributes": {
@@ -38,12 +38,16 @@
 		]
 	},
 	"scripts": {
-		"compile": "tsc -watch"
+		"wing:prepublish": "node ./node_modules/egretwing/bin/compile",
+		"compile": "node ./node_modules/egretwing/bin/compile -watch -p ./",
+		"postinstall": "node ./node_modules/egretwing/bin/install"
 	},
 	"dependencies": {
 		"underscore.string": "^3.2.2",
 		"figlet": "^1.1.1"
 	},
 	"devDependencies": {
+		"egretwing": "^3.0.0",
+		"typescript": "^1.7.5"
 	}
 }

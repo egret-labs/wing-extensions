@@ -3,6 +3,7 @@
 		"module": "commonjs",
 		"outDir": "out",
 		"sourceMap": true,
+		"noLib": true,
 		"moduleResolution": "node"
 	},
 	"exclude": [

@@ -74,8 +74,8 @@ function textFunctions() {
 		if (!selection) {
 			return;
 		}
-		let e = Window.activeEditor as TextEditor;
-        if (!e.isTypeOf(wing.EditorType.TextEditor)) {
+		let e = Window.activeTextEditor;
+        if (!e) {
             return;
         }
 		let d = e.document;

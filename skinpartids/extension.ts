@@ -8,25 +8,26 @@ export function activate() {
 }
 
 function copyIds() {
-    let e = wing.window.activeEditor;
+    let e = wing.window.activeTextEditor;
     if (!e) {
         return;
     }
+
     let fileName = e.document.fileName;
     let ext = path.extname(fileName);
     if (ext != '.exml') {
         return;
     }
-    let content = fs.readFileSync(fileName, 'utf-8');
+    let content = e.document.getText();
 
     let result = findIds(content);
 
     if (result) {
         clipboard.copy(result, () => {
-            console.log("已成功解析exml中id,并复制对应的ts代码到剪切板,可使用粘贴操作到指定位置.");
+            wing.window.showInformationMessage("已成功解析exml中id,并复制对应的ts代码到剪切板,可使用粘贴操作到指定位置.");
         });
     } else {
-        console.log("exml中不存在id属性的节点.");
+        wing.window.showInformationMessage("exml中不存在id属性的节点.");
     }
 
 }

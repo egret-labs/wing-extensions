@@ -6,5 +6,5 @@ export function activate() {
 }
 
 function helloWing() {
-    console.log("Hello Wing");
+	wing.window.showInformationMessage('Hello Wing');
 }
