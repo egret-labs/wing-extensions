@@ -1,5 +1,5 @@
 /*
-	This is the Type Definition file for VSCode version 0.10.1
+	This is the Type Definition file for EgretWing version 3.0.0
 */
 
 declare namespace vscode {
