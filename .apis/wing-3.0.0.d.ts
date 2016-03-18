@@ -1,5 +1,5 @@
 /*
-	This is the Type Definition file for EgretWing version 3.0.2
+	This is the Type Definition file for EgretWing version 3.0.0
 */
 
 declare namespace vscode {
@@ -143,8 +143,7 @@ declare namespace vscode {
 		 * Save the underlying file.
 		 *
 		 * @return A promise that will resolve to true when the file
-		 * has been saved. If the file was not dirty or the save failed,
-		 * will return false.
+		 * has been saved.
 		 */
 		save(): Thenable<boolean>;
 
@@ -520,24 +519,6 @@ declare namespace vscode {
 	}
 
 	/**
-	 * Rendering style of the cursor.
-	 */
-	export enum TextEditorCursorStyle {
-		/**
-		 * Render the cursor as a vertical line.
-		 */
-		Line = 1,
-		/**
-		 * Render the cursor as a block.
-		 */
-		Block = 2,
-		/**
-		 * Render the cursor as a horizontal line under the character.
-		 */
-		Underline = 3
-	}
-
-	/**
 	 * Represents a [text editor](#TextEditor)'s [options](#TextEditor.options).
 	 */
 	export interface TextEditorOptions {
@@ -546,24 +527,13 @@ declare namespace vscode {
 		 * The size in spaces a tab takes. This is used for two purposes:
 		 *  - the rendering width of a tab character;
 		 *  - the number of spaces to insert when [insertSpaces](#TextEditorOptions.insertSpaces) is true.
-		 * When getting a text editor's options, this property will always be a number (resolved).
-		 * When setting a text editor's options, this property is optional and it can be a number or `"auto"`.
 		 */
-		tabSize?: number | string;
+		tabSize: number;
 
 		/**
 		 * When pressing Tab insert [n](#TextEditorOptions.tabSize) spaces.
-		 * When getting a text editor's options, this property will always be a boolean (resolved).
-		 * When setting a text editor's options, this property is optional and it can be a boolean or `"auto"`.
 		 */
-		insertSpaces?: boolean | string;
-
-		/**
-		 * The rendering style of the cursor in this editor.
-		 * When getting a text editor's options, this property will always be present.
-		 * When setting a text editor's options, this property is optional.
-		 */
-		cursorStyle?: TextEditorCursorStyle;
+		insertSpaces: boolean;
 	}
 
 	/**
@@ -821,20 +791,6 @@ declare namespace vscode {
 	}
 
 	/**
-	 * Represents an end of line character sequence in a [document](#Document).
-	 */
-	export enum EndOfLine {
-		/**
-		 * The line feed `\n` character.
-		 */
-		LF = 1,
-		/**
-		 * The carriage return line feed `\r\n` sequence.
-		 */
-		CRLF = 2
-	}
-
-	/**
 	 * A complex edit that will be applied in one transaction on a TextEditor.
 	 * This holds a description of the edits and if the edits are valid (i.e. no overlapping regions, document was not changed in the meantime, etc.)
 	 * they can be applied on a [document](#Document) associated with a [text editor](#TextEditor).
@@ -866,13 +822,6 @@ declare namespace vscode {
 		 * @param location The range this operation should remove.
 		 */
 		delete(location: Range | Selection): void;
-
-		/**
-		 * Set the end of line sequence.
-		 *
-		 * @param endOfLine The new end of line for the [document](#Document).
-		 */
-		setEndOfLine(endOfLine: EndOfLine): void;
 	}
 
 	/**
@@ -2339,12 +2288,12 @@ declare namespace vscode {
 		 * @deprecated Will be replaced by a better API soon.
 		 */
 		__electricCharacterSupport?: {
-			/**
-			 * This property is deprecated and will be **ignored** from
-			 * the editor.
-			 * @deprecated
-			 */
-			brackets?: any;
+			brackets: {
+				tokenType: string;
+				open: string;
+				close: string;
+				isElectric: boolean;
+			}[];
 			docComment?: {
 				scope: string;
 				open: string;
@@ -2596,7 +2545,7 @@ declare namespace vscode {
 		 * Reveal this channel in the UI.
 		 * @deprecated **This method is deprecated.**
 		 *
-		 * @param @deprecated column **This argument is deprecated.**
+		 * @param column The column in which to show the channel, default in [one](#ViewColumn.One).
 		 * @param preserveFocus When `true` the channel will not take focus.
 		 */
 		show(column?: ViewColumn, preserveFocus?: boolean): void;
@@ -2973,7 +2922,7 @@ declare namespace vscode {
 		export const onDidChangeTextEditorOptions: Event<TextEditorOptionsChangeEvent>;
 
 		/**
-		 * An [event](#Event) which fires when the view column of an editor has changed.
+		 * An [event](#Event) which fires when the view column of an editor das changed.
 		 */
 		export const onDidChangeTextEditorViewColumn: Event<TextEditorViewColumnChangeEvent>;
 
@@ -3193,154 +3142,6 @@ declare namespace vscode {
 		contentChanges: TextDocumentContentChangeEvent[];
 	}
 
-	export namespace complexCommands {
-		/**
-		 * Execute all workspace symbol provider.
-		 *
-		 * @param query Search string.
-		 * @return A promise that resolves to an array of SymbolInformation-instances.
-		 */
-		export function executeWorkspaceSymbolProvider(query: string): Thenable<SymbolInformation[]>;
-
-		/**
-		 * Execute all definition provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param position Position of a symbol.
-		 * @return A promise that resolves to an array of Location-instances.
-		 */
-		export function executeDefinitionProvider(uri: Uri, position: Position): Thenable<Location[]>;
-
-		/**
-		 * Execute all hover provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param position Position of a symbol.
-		 * @return A promise that resolves to an array of Hover-instances.
-		 */
-		export function executeHoverProvider(uri: Uri, position: Position): Thenable<Hover[]>;
-
-		/**
-		 * Execute document highlight provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param position Position in a text document.
-		 * @return A promise that resolves to an array of DocumentHighlight-instances.
-		 */
-		export function executeDocumentHighlights(uri: Uri, position: Position): Thenable<DocumentHighlight[]>;
-
-		/**
-		 * Execute reference provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param position Position in a text document.
-		 * @return A promise that resolves to an array of Location-instances.
-		 */
-		export function executeReferenceProvider(uri: Uri, position: Position): Thenable<Location[]>;
-
-		/**
-		 * Execute rename provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param position Position in a text document.
-		 * @param newName The new symbol name.
-		 * @return A promise that resolves to a WorkspaceEdit.
-		 */
-		export function executeDocumentRenameProvider(uri: Uri, position: Position, newName: string): Thenable<WorkspaceEdit>;
-
-		/**
-		 * Execute rename provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param position Position in a text document.
-		 * @param triggerCharacter Trigger signature help when the user types the character, like `,` or `(`.
-		 * @return A promise that resolves to a WorkspaceEdit.
-		 */
-		export function executeSignatureHelpProvider(uri: Uri, position: Position, triggerCharacter: string): Thenable<SignatureHelp>;
-
-		/**
-		 * Execute document symbol provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @return A promise that resolves to an array of SymbolInformation-instances.
-		 */
-		export function executeDocumentSymbolProvider(uri: Uri): Thenable<SymbolInformation[]>;
-
-		/**
-		 * Execute completion item provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param position Position in a text document.
-		 * @param triggerCharacter Trigger completion help when the user types the character, like `,` or `(`.
-		 * @return A promise that resolves to a CompletionList-instance.
-		 */
-		export function executeCompletionItemProvider(uri: Uri, position: Position, triggerCharacter: string): Thenable<CompletionItem[] | CompletionList>;
-
-		/**
-		 * Execute code action provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param range Range in a text document.
-		 * @return A promise that resolves to an array of Command-instances.
-		 */
-		export function executeCodeActionProvider(uri: Uri, range: Range): Thenable<Command[]>;
-
-		/**
-		 * Execute completion item provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @return A promise that resolves to an array of CodeLens-instances.
-		 */
-		export function executeCodeLensProvider(uri: Uri): Thenable<CodeLens[]>;
-
-		/**
-		 * Execute document format provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param options Formatting options.
-		 * @return A promise that resolves to an array of TextEdits.
-		 */
-		export function executeFormatDocumentProvider(uri: Uri, options: FormattingOptions): Thenable<TextEdit[]>;
-
-		/**
-		 * Execute range format provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param range Range in a text document.
-		 * @param options Formatting options.
-		 * @return A promise that resolves to an array of TextEdits.
-		 */
-		export function executeFormatRangeProvider(uri: Uri, range: Range, options: FormattingOptions): Thenable<TextEdit[]>;
-
-		/**
-		 * Execute document format provider.
-		 *
-		 * @param uri Uri of a text document.
-		 * @param position Position in a text document.
-		 * @param ch Character that got typed.
-		 * @param options Formatting options.
-		 * @return A promise that resolves to an array of TextEdits.
-		 */
-		export function executeFormatOnTypeProvider(uri: Uri, position: Position, ch: string, options: FormattingOptions): Thenable<TextEdit[]>;
-
-		/**
-		 * Preview a html document.
-		 *
-		 * @param uri Uri of a html document.
-		 * @param column (optional) Column in which to preview.
-		 */
-		export function previewHtml(uri: Uri, column?: ViewColumn): Thenable<void>;
-
-		/**
-		 * Preview a webview document.
-		 *
-		 * @param uri Uri of a html document.
-		 * @param name The title of webview editor.
-		 * @param column (optional) Column in which to preview.
-		 */
-		export function previewWebView(uri: Uri, name: string, column?: ViewColumn): Thenable<void>;
-	}
-
 	/**
 	 * Namespace for dealing with the current workspace. A workspace is the representation
 	 * of the folder that has been opened. There is no workspace when just a file but not a
@@ -3369,8 +3170,6 @@ declare namespace vscode {
 		/**
 		 * The folder that is open in VS Code. `undefined` when no folder
 		 * has been opened.
-		 *
-		 * @readonly
 		 */
 		export let rootPath: string;
 
@@ -3431,8 +3230,8 @@ declare namespace vscode {
 		 * [open document](#workspace.onDidOpenTextDocument)-event fires.
 		 * The document to open is denoted by the [uri](#Uri). Two schemes are supported:
 		 *
-		 * file: A file on disk, will be rejected if the file does not exist or cannot be loaded, e.g. `file:///Users/frodo/r.ini`.
-		 * untitled: A new file that should be saved on disk, e.g. `untitled:c:\frodo\new.js`. The language will be derived from the file name.
+		 * file: A file on disk, will be rejected if the file does not exist or cannot be loaded, e.g. 'file:///Users/frodo/r.ini'.
+		 * untitled: A new file that should be saved on disk, e.g. 'untitled:/Users/frodo/new.js'. The language will be derived from the file name.
 		 *
 		 * Uris with other schemes will make this method return a rejected promise.
 		 *
@@ -3693,7 +3492,7 @@ declare namespace vscode {
 		 * Register a reference provider.
 		 *
 		 * Multiple providers can be registered for a language. In that case providers are sorted
-		 * by their [score](#languages.match) and the best-matching provider is used. Failure
+		 * by their [score](#languages.match) and the result of best-matching provider is used. Failure
 		 * of the selected provider will cause a failure of the whole operation.
 		 *
 		 * @param selector A selector that defines the documents this provider is applicable to.
@@ -3706,7 +3505,7 @@ declare namespace vscode {
 		 * Register a formatting provider for a document.
 		 *
 		 * Multiple providers can be registered for a language. In that case providers are sorted
-		 * by their [score](#languages.match) and the best-matching provider is used. Failure
+		 * by their [score](#languages.match) and the result of best-matching provider is used. Failure
 		 * of the selected provider will cause a failure of the whole operation.
 		 *
 		 * @param selector A selector that defines the documents this provider is applicable to.
@@ -3719,7 +3518,7 @@ declare namespace vscode {
 		 * Register a formatting provider for a document range.
 		 *
 		 * Multiple providers can be registered for a language. In that case providers are sorted
-		 * by their [score](#languages.match) and the best-matching provider is used. Failure
+		 * by their [score](#languages.match) and the result of best-matching provider is used. Failure
 		 * of the selected provider will cause a failure of the whole operation.
 		 *
 		 * @param selector A selector that defines the documents this provider is applicable to.
@@ -3729,10 +3528,10 @@ declare namespace vscode {
 		export function registerDocumentRangeFormattingEditProvider(selector: DocumentSelector, provider: DocumentRangeFormattingEditProvider): Disposable;
 
 		/**
-		 * Register a formatting provider that works on type. The provider is active when the user enables the setting `editor.formatOnType`.
+		 * Register a formatting provider that works on type.
 		 *
 		 * Multiple providers can be registered for a language. In that case providers are sorted
-		 * by their [score](#languages.match) and the best-matching provider is used. Failure
+		 * by their [score](#languages.match) and the result of best-matching provider is used. Failure
 		 * of the selected provider will cause a failure of the whole operation.
 		 *
 		 * @param selector A selector that defines the documents this provider is applicable to.
@@ -3747,7 +3546,7 @@ declare namespace vscode {
 		 * Register a signature help provider.
 		 *
 		 * Multiple providers can be registered for a language. In that case providers are sorted
-		 * by their [score](#languages.match) and the best-matching provider is used. Failure
+		 * by their [score](#languages.match) and the result of best-matching provider is used. Failure
 		 * of the selected provider will cause a failure of the whole operation.
 		 *
 		 * @param selector A selector that defines the documents this provider is applicable to.
@@ -3924,10 +3723,10 @@ interface PromiseConstructor {
 	reject<T>(reason: any): Promise<T>;
 
 	/**
-	 * Creates a new resolved promise for the provided value.
-	 * @param value A promise.
-	 * @returns A promise whose internal state matches the provided promise.
-	 */
+	  * Creates a new resolved promise for the provided value.
+	  * @param value A promise.
+	  * @returns A promise whose internal state matches the provided promise.
+	  */
 	resolve<T>(value: T | Thenable<T>): Promise<T>;
 
 	/**
