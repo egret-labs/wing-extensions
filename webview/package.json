@@ -1,0 +1,34 @@
+{
+  "name": "preview-webview",
+  "displayName": "WebView Example",
+  "description": "An Extension Demo For Egret Wing.",
+  "version": "0.0.1",
+  "publisher": "egret",
+  "engines": {
+    "wing": "^3.0.2"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.showWebView"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.showWebView",
+        "title": "Show WebView"
+      }
+    ]
+  },
+  "scripts": {
+    "wing:prepublish": "node ./node_modules/egretwing/bin/compile",
+    "compile": "node ./node_modules/egretwing/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/egretwing/bin/install"
+  },
+  "devDependencies": {
+    "egretwing": "^3.0.0",
+    "typescript": "^1.7.5"
+  }
+}

@@ -1,0 +1,38 @@
+<html>
+
+<head>
+	<style>
+		.monaca-shell {
+			margin: 8px;
+		}
+		
+		.center {
+			display: flex;
+			flex-flow: column;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			height: 100%;
+		}
+		
+		.center div {
+			text-align: center;
+		}
+	</style>
+	<script src="./webview.js">
+
+	</script>
+</head>
+
+<body>
+	<div class='center'>
+		<div>
+			<h1>This is a webview page</h1>
+			<input type="button" value="ShowAlert" onclick="showAlert();" />
+			<input type="button" value="OpenDevTools" onclick="openDevTools();" />
+			<input type="button" value="NodeApiTest" onclick="nodeApiTest();" />
+		</div>
+	</div>
+</body>
+
+</html>
