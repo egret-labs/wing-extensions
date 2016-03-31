@@ -2,7 +2,7 @@
 	This is the Type Definition file for EgretWing version 3.0.2
 */
 
-declare namespace vscode {
+declare namespace wing {
 
 	/**
 	 * The version of the editor.
@@ -2594,9 +2594,11 @@ declare namespace vscode {
 
 		/**
 		 * Reveal this channel in the UI.
-		 * @deprecated **This method is deprecated.**
 		 *
-		 * @param @deprecated column **This argument is deprecated.**
+		 * @deprecated This method is **deprecated** and the overload with
+		 * just one parameter should be used (`show(preservceFocus?: boolean): void`).
+		 *
+		 * @param column This argument is **deprecated** and will be ignored.
 		 * @param preserveFocus When `true` the channel will not take focus.
 		 */
 		show(column?: ViewColumn, preserveFocus?: boolean): void;
@@ -3337,8 +3339,31 @@ declare namespace vscode {
 		 * @param uri Uri of a html document.
 		 * @param name The title of webview editor.
 		 * @param column (optional) Column in which to preview.
+		 * @param attrs (optional) A instance that `WebViewAttributes`.
 		 */
-		export function previewWebView(uri: Uri, name: string, column?: ViewColumn): Thenable<void>;
+		export function previewWebView(uri: Uri, name: string, column?: ViewColumn, attrs?: WebViewAttributes): Thenable<void>;
+	}
+
+	export interface WebViewAttributes {
+
+		/**
+		 * Specifies a script that will be loaded before other scripts run in the guest page.
+		 * The protocol of script’s URL must be either file: or asar:, because it will be loaded by require in guest page under the hood.
+		 * When the guest page doesn’t have node integration this script will still have access to all Node APIs,
+		 * but global objects injected by Node will be deleted after this script has finished executing.
+		 */
+		preload?: string;
+
+		/**
+		 * webview will have node integration and can use node APIs like require and process
+		 * to access low level system resources. Defaults to `true`
+		 */
+		nodeintegration?: boolean;
+
+		/**
+		 * webview will have web security disabled. Defaults to `true`
+		 */
+		disablewebsecurity?: boolean;
 	}
 
 	/**
@@ -3775,7 +3800,7 @@ declare namespace vscode {
 	 * surface from the `activate`-call.
 	 *
 	 * ```javascript
-	 * export function activate(context: vscode.ExtensionContext) {
+	 * export function activate(context: wing.ExtensionContext) {
 	 * 		let api = {
 	 * 			sum(a, b) {
 	 * 				return a + b;
@@ -3830,11 +3855,11 @@ declare namespace vscode {
 // when used for JS*
 // !!! DO NOT MODIFY ABOVE COMMENT ("when used for JS*") IT IS BEING USED TO DETECT JS* ONLY CHANGES !!!
 declare module 'vscode' {
-	export = vscode;
+	export = wing;
 }
 
 declare module 'wing' {
-	export = vscode;
+	export = wing;
 }
 
 /**
