@@ -5,7 +5,7 @@ export function action(): void {
 	wing.window.showPopup<IFormOptions>(PopupType.Form, new Store(properties, scheme), {
 		title: '表单例子'
 	}).then((result) => {
-		wing.window.showInformationMessage(JSON.stringify(result.getProperties(true)));
+		result && wing.window.showInformationMessage(JSON.stringify(result.getProperties(true)));
 	});
 }
 
