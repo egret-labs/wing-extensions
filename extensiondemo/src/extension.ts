@@ -2,8 +2,11 @@ import * as wing from 'wing';
 import * as showMessage from './actions/showMessage';
 import * as showPopup from './actions/showPopup';
 
-export function activate() {
+export function activate(context: wing.ExtensionContext) {
 	wing.commands.registerCommand('extension.demo', run);
+}
+
+export function deactivate() {
 }
 
 interface ActionQuickPickItem extends wing.QuickPickItem {
