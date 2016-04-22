@@ -1,34 +1,44 @@
 {
-  "name": "preview-webview",
+  "name": "webview",
   "displayName": "WebView Example",
   "description": "An Extension Demo For Egret Wing.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "egret",
   "engines": {
-    "wing": "^3.0.2"
+    "wing": "^3.0.4"
   },
   "categories": [
     "Other"
   ],
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/egret-labs/wing-extensions.git"
+	},
+  "license": "MIT",
   "activationEvents": [
-    "onCommand:extension.showWebView"
+    "onCommand:extension.previewWebView",
+    "onCommand:extension.showWebViewPopup"
   ],
-  "main": "./out/src/extension",
+  "main": "./out/extension",
   "contributes": {
     "commands": [
       {
-        "command": "extension.showWebView",
-        "title": "Show WebView"
+        "command": "extension.previewWebView",
+        "title": "Preview WebView"
+      },
+      {
+        "command": "extension.showWebViewPopup",
+        "title": "Show WebViewPopup"
       }
     ]
   },
   "scripts": {
     "wing:prepublish": "node ./node_modules/egretwing/bin/compile",
-    "compile": "node ./node_modules/egretwing/bin/compile -watch -p ./",
+    "compile": "node ./node_modules/egretwing/bin/compile -watch -p ./src",
     "postinstall": "node ./node_modules/egretwing/bin/install"
   },
   "devDependencies": {
-    "egretwing": "^3.0.0",
+    "egretwing": "^3.0.4",
     "typescript": "^1.7.5"
   }
 }

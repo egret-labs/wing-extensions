@@ -2,12 +2,44 @@ import * as wing from 'wing';
 import * as path from 'path';
 
 export function activate(context: wing.ExtensionContext) {
-	wing.commands.registerCommand('extension.showWebView', () => {
-		run(context);
+	let html = wing.Uri.file(path.join(context.extensionPath, 'web/index.html'));
+
+	wing.window.webviews.forEach(webview => {
+		webviewAdded(webview);
+	});
+
+	wing.window.onDidCreateWebView((webview) => {
+		webviewAdded(webview);
+	});
+
+	wing.window.onDidDeleteWebView((webview) => {
+		webviewRemoved(webview);
+	});
+
+	wing.commands.registerCommand('extension.previewWebView', () => {
+		previewWebView(html);
+	});
+	wing.commands.registerCommand('extension.showWebViewPopup', () => {
+		showWebViewPopup(html);
 	});
 }
 
-function run(context: wing.ExtensionContext) {
-	let html = path.join(context.extensionPath, 'index.html');
-	wing.complexCommands.previewWebView(wing.Uri.file(html), 'WebViewTest');
+function webviewAdded(webview: wing.WebView) {
+	webview.addEventListener('ipc-message', (message) => {
+		wing.window.showInformationMessage('Message From WebView: ' + message.channel, ...message.args);
+		webview.send('pong');
+	});
+}
+
+function webviewRemoved(webview: wing.WebView) {
+}
+
+function previewWebView(html: wing.Uri) {
+	wing.complexCommands.previewWebView(html, 'WebViewTest');
+}
+
+function showWebViewPopup(html: wing.Uri) {
+	wing.window.showPopup<wing.IWebViewOptions>(wing.PopupType.WebView, {
+		uri: html
+	});
 }
