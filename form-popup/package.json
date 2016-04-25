@@ -1,24 +1,30 @@
 {
-  "name": "extensiondemo",
-  "displayName": "ExtensionDemo",
-  "description": "An Extension Demo For Egret Wing.",
-  "version": "0.0.1",
+  "name": "form-popup",
+  "displayName": "Form Popup",
+  "description": "Show Form Popup.",
+  "version": "1.0.0",
   "publisher": "egret",
   "engines": {
-    "wing": "^3.0.0"
+    "wing": "^3.0.4"
   },
   "categories": [
     "Other"
   ],
+  "homepage": "https://github.com/egret-labs/wing-extensions/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/egret-labs/wing-extensions.git"
+	},
+	"license": "MIT",
   "activationEvents": [
-    "onCommand:extension.demo"
+    "onCommand:extension.formPopup"
   ],
   "main": "./out/src/extension",
   "contributes": {
     "commands": [
       {
-        "command": "extension.demo",
-        "title": "Extension Demo"
+        "command": "extension.formPopup",
+        "title": "Show Form Popup"
       }
     ]
   },
@@ -28,7 +34,7 @@
     "postinstall": "node ./node_modules/egretwing/bin/install"
   },
   "devDependencies": {
-    "egretwing": "^3.0.0",
+    "egretwing": "^3.0.4",
     "typescript": "^1.7.5"
   }
 }
