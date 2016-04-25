@@ -11,7 +11,7 @@ import TextEditor = wing.TextEditor;
 var figlet = require('figlet');
 import us = require('underscore.string');
 
-export function activate() {
+export function activate(context: wing.ExtensionContext) {
 	console.log('Congratulations, your extension "TextTools" is now active!');
 	wing.commands.registerCommand('extension.textFunctions', textFunctions);
 }
@@ -19,7 +19,7 @@ export function activate() {
 // String Functions Helper//////////////////////////////
 function toUpper(e: TextEditor, d: TextDocument, sel: Selection) {
 	// itterate through the elections and convert all text to Upper
-    e.edit(function(edit) {
+    e.edit(function (edit) {
         let txt: string = d.getText(new Range(sel.start, sel.end));
         edit.replace(sel, txt.toUpperCase());
     });
@@ -27,7 +27,7 @@ function toUpper(e: TextEditor, d: TextDocument, sel: Selection) {
 
 function toLower(e: TextEditor, d: TextDocument, sel: Selection) {
 	// itterate through the elections and convert all text to Upper
-    e.edit(function(edit) {
+    e.edit(function (edit) {
         let txt: string = d.getText(new Range(sel.start, sel.end));
         edit.replace(sel, txt.toLowerCase());
     });
@@ -37,7 +37,7 @@ function toLower(e: TextEditor, d: TextDocument, sel: Selection) {
 // if there are any args pass an array as 'argsCB'
 function processSelection(e: TextEditor, d: TextDocument, sel: Selection, formatCB, argsCB) {
 	var replaceRange: Selection;
-	e.edit(function(edit) {
+	e.edit(function (edit) {
 		// itterate through the selections
         let txt: string = d.getText(new Range(sel.start, sel.end));
         if (argsCB.length > 0) {
@@ -46,7 +46,7 @@ function processSelection(e: TextEditor, d: TextDocument, sel: Selection, format
         } else {
             txt = formatCB(txt);
         }
-        
+
         //replace the txt in the current select and work our any range adjustments
         edit.replace(sel, txt);
         let startPos: Position = new Position(sel.start.line, sel.start.character);
@@ -109,14 +109,14 @@ function textFunctions() {
 			case "ASCII Art":
 				// build a full list of the fonts for the drop down
 				items = [];
-                figlet.fontsSync().forEach(function(font) {
+                figlet.fontsSync().forEach(function (font) {
 					items.push({ label: font, description: "User the " + font + " font" });
 				}, this);
 
-				Window.showQuickPick(items).then(function(selection) {
-                    if (!selection) {
-                        return;
-                    }
+				Window.showQuickPick(items).then(function (selection) {
+					if (!selection) {
+						return;
+					}
 					processSelection(e, d, sel, figlet.textSync, [selection.label]);
 				});
 				break;

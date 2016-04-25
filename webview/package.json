@@ -2,7 +2,7 @@
   "name": "webview",
   "displayName": "WebView Example",
   "description": "An Extension Demo For Egret Wing.",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "publisher": "egret",
   "engines": {
     "wing": "^3.0.4"
@@ -10,6 +10,7 @@
   "categories": [
     "Other"
   ],
+  "icon": "images/icon.svg",
   "repository": {
 		"type": "git",
 		"url": "https://github.com/egret-labs/wing-extensions.git"

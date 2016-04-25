@@ -1,12 +1,12 @@
 {
 	"name": "hellowing",
 	"description": "A Simple Extension For Egret Wing.",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"publisher": "egret",
 	"categories": [
 		"Other"
 	],
-	"icon": "images/icon.png",
+	"icon": "images/icon.svg",
 	"bugs": {
 		"url": "https://github.com/egret-labs/wing-extensions/issues"
 	},
@@ -15,11 +15,12 @@
 		"type": "git",
 		"url": "https://github.com/egret-labs/wing-extensions.git"
 	},
+	"license": "MIT",
 	"activationEvents": [
 		"onCommand:extension.helloWing"
 	],
 	"engines": {
-		"wing": "^3.0.0"
+		"wing": "^3.0.4"
 	},
 	"main": "./out/extension",
 	"contributes": {
@@ -37,7 +38,7 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"egretwing": "^3.0.0",
+		"egretwing": "^3.0.4",
 		"typescript": "^1.7.5"
 	}
 }
