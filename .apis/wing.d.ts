@@ -1,5 +1,5 @@
 /*
-	This is the Type Definition file for EgretWing version 3.0.2
+	This is the Type Definition file for EgretWing version 3.0.4
 */
 
 declare namespace wing {
@@ -927,21 +927,24 @@ declare namespace wing {
 		fragment: string;
 
 		/**
-		 * The string representing the corresponding file system path of this URI.
+		 * The string representing the corresponding file system path of this Uri.
 		 *
 		 * Will handle UNC paths and normalize windows drive letters to lower-case. Also
 		 * uses the platform specific path separator. Will *not* validate the path for
-		 * invalid characters and semantics. Will *not* look at the scheme of this URI.
+		 * invalid characters and semantics. Will *not* look at the scheme of this Uri.
 		 */
 		fsPath: string;
 
 		/**
-		 * Returns a canonical representation of this URI. The representation and normalization
-		 * of a URI depends on the scheme.
+		 * Returns a string representation of this Uri. The representation and normalization
+		 * of a URI depends on the scheme. The resulting string can be safely used with
+		 * [Uri.parse](#Uri.parse).
 		 *
-		 * @returns A string that is the encoded version of this Uri.
+		 * @param skipEncoding Do not percentage-encode the result, defaults to `false`. Note that
+		 *	the `#` and `?` characters occuring in the path will always be encoded.
+		 * @returns A string representation of this Uri.
 		 */
-		toString(): string;
+		toString(skipEncoding?: boolean): string;
 
 		/**
 		 * Returns a JSON representation of this Uri.
@@ -973,14 +976,15 @@ declare namespace wing {
 		enum?: any[];
 		displayAsPassword?: boolean;
 		displayOrder?: number;
-		requested?: boolean;
+		required?: boolean;
+		flexibleHeight?: boolean;
 	}
 
 	/**
 	 * A properties Store
 	 */
 	export class Store {
-		constructor(properties: IStoreMap, schema: IStoreSchemaMap);
+		constructor(properties: IStoreMap, schema?: IStoreSchemaMap);
 
 		contains(name: string): boolean;
 
@@ -2063,6 +2067,12 @@ declare namespace wing {
 	 * A completion item represents a text snippet that is
 	 * proposed to complete text that is being typed.
 	 *
+	 * It is suffient to create a completion item from just
+	 * a [label](#CompletionItem.label). In that case the completion
+	 * item will replace the [word](#TextDocument.getWordRangeAtPosition)
+	 * until the cursor with the given label.
+	 *
+	 *
 	 * @see [CompletionItemProvider.provideCompletionItems](#CompletionItemProvider.provideCompletionItems)
 	 * @see [CompletionItemProvider.resolveCompletionItem](#CompletionItemProvider.resolveCompletionItem)
 	 */
@@ -2911,7 +2921,7 @@ declare namespace wing {
 		 * @param thisArg The `this` context used when invoking the handler function.
 		 * @return Disposable which unregisters this command on disposal.
 		 */
-		export function registerTextEditorCommand(command: string, callback: (textEditor: TextEditor, edit: TextEditorEdit) => void, thisArg?: any): Disposable;
+		export function registerTextEditorCommand(command: string, callback: (textEditor: TextEditor, edit: TextEditorEdit, ...args: any[]) => void, thisArg?: any): Disposable;
 
 		/**
 		 * Executes the command denoted by the given command identifier.
@@ -2947,7 +2957,7 @@ declare namespace wing {
 	export namespace window {
 
 		/**
-		 * The currently active editor or undefined. The active editor is the one
+		 * The currently active editor or `undefined`. The active editor is the one
 		 * that currently has focus or, when none has focus, the one that has changed
 		 * input most recently.
 		 */
@@ -2959,8 +2969,14 @@ declare namespace wing {
 		export let visibleTextEditors: TextEditor[];
 
 		/**
+		 * The opened webviews or an empty array.
+		 */
+		export let webviews: WebView[];
+
+		/**
 		 * An [event](#Event) which fires when the [active editor](#window.activeTextEditor)
-		 * has changed.
+		 * has changed. *Note* that the event also fires when the active editor changes
+		 * to `undefined`.
 		 */
 		export const onDidChangeActiveTextEditor: Event<TextEditor>;
 
@@ -2978,6 +2994,16 @@ declare namespace wing {
 		 * An [event](#Event) which fires when the view column of an editor has changed.
 		 */
 		export const onDidChangeTextEditorViewColumn: Event<TextEditorViewColumnChangeEvent>;
+
+		/**
+		 * An [event](#Event) which fires when a webview created.
+		 */
+		export const onDidCreateWebView: Event<WebView>;
+
+		/**
+		 * An [event](#Event) which fires when a webview removed.
+		 */
+		export const onDidDeleteWebView: Event<WebView>;
 
 		/**
 		 * Show the given document in a text editor. A [column](#ViewColumn) can be provided
@@ -3102,7 +3128,8 @@ declare namespace wing {
 		 * @param the popup window options
 		 * @return A promise that resolves to a Store.
 		 */
-		export function showPopup<O>(type: PopupType, store: Store, options?: O): Thenable<Store>;
+		export function showPopup<O>(type: PopupType, store?: Store, options?: O): Thenable<Store>;
+		export function showPopup<O>(type: PopupType, options?: O): Thenable<Store>;
 
 		/**
 		 * Create a new [output channel](#OutputChannel) with the given name.
@@ -3151,7 +3178,8 @@ declare namespace wing {
 	}
 
 	export enum PopupType {
-		Form
+		Form,
+		WebView
 	}
 
 	export interface IFormOptions {
@@ -3159,6 +3187,19 @@ declare namespace wing {
 		icon?: string;
 		note?: string;
 		showSubmit?: boolean;
+	}
+
+	export interface IWebViewOptions extends WebViewAttributes {
+		uri: Uri;
+	}
+
+	export interface WebView {
+		send(channel: string, ...args: any[]): void;
+		addEventListener(type: "ipc-message", listener: (message: {
+			channel: string,
+			args: any[]
+		}) => void): Disposable;
+		addEventListener(type: string, listener: Function): Disposable;
 	}
 
 	/**
