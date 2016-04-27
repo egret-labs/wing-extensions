@@ -27,4 +27,5 @@ WebView中能够使用的API与插件进程中不同。
  - 不支持使用 `wing.d.ts` 中定义的所有API。
  - 支持所有 `node.d.ts` 中定义的所有API。
  - 支持 `electron.d.ts` 中渲染进程中定义的部分API。
+ - 支持 `dom.d.ts` 中定义的所有浏览器中的API。
  - 内置 `wing` 命名空间，如： `wing.webview.ipc` 提供 `ipc` 通讯相关的接口。
