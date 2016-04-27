@@ -19,6 +19,9 @@ WebView是一个自定义的DOM标签，类似于iframe，只不过运行在单�
 由于WebView运行在单独的进程，所以运行在WebView中的JavaScript代码与插件项目不在一个环境。
 本Demo中的web文件夹中存放运行在webview中的代码，如果包含ts需要单独编译。
 
+插件进程可以通过 `wing.window.webviews` ， `wing.window.onDidCreateWebView` ， `wing.window.onDidDeleteWebView`
+获取当前打开的 `wing.WebView`。 `wing.WebView` 提供了与WebView进程通讯的接口。
+
 WebView中能够使用的API与插件进程中不同。
 
  - 不支持使用 `wing.d.ts` 中定义的所有API。
