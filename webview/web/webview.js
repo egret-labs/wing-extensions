@@ -1,12 +1,11 @@
 "use strict";
 var path = require('path');
-var fs = require('fs');
 function showAlert() {
     alert('Hello WebView');
 }
 function nodeApiTest() {
     var packagePath = path.join(__dirname, '../package.json');
-    alert(fs.readFileSync(packagePath, 'utf8'));
+    alert(packagePath);
 }
 function openDevTools() {
     wing.webview.ipc.sendToHost('openDevTools');
