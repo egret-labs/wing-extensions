@@ -1,0 +1,11 @@
+.wing/**
+typings/**
+web/typings/**
+out/test/**
+test/**
+src/**
+**/*.map
+**/*.ts
+.gitignore
+tsconfig.json
+web/tsconfig.json
