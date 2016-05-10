@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "publisher": "egret",
   "engines": {
-    "wing": "^3.0.4"
+    "wing": "^3.0.6"
   },
   "categories": [
     "Other"

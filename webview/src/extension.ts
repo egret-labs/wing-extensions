@@ -41,5 +41,13 @@ function previewWebView(html: wing.Uri) {
 function showWebViewPopup(html: wing.Uri) {
 	wing.window.showPopup<wing.IWebViewOptions>(wing.PopupType.WebView, {
 		uri: html
+	}, {
+		position: wing.PopupPosition.MIDDLE,
+		width: 600,
+		height: 400,
+		title: '测试',
+		movable: true,
+		closeButton: true,
+		modal: true
 	});
 }
