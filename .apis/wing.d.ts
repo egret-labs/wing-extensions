@@ -1,5 +1,5 @@
 /*
-	This is the Type Definition file for EgretWing version 3.0.4
+	This is the Type Definition file for EgretWing version 3.0.6
 */
 
 declare namespace wing {
@@ -1262,6 +1262,12 @@ declare namespace wing {
 		 * A short title like 'Retry', 'Open Log' etc.
 		 */
 		title: string;
+
+		/**
+		 * Indicates that this item replaces the default
+		 * 'Close' action.
+		 */
+		isCloseAffordance?: boolean;
 	}
 
 	/**
@@ -2552,6 +2558,32 @@ declare namespace wing {
 		clear(): void;
 
 		/**
+		 * Iterate over each entry in this collection.
+		 *
+		 * @param callback Function to execute for each entry.
+		 * @param thisArg The `this` context used when invoking the handler function.
+		 */
+		forEach(callback: (uri: Uri, diagnostics: Diagnostic[], collection: DiagnosticCollection) => any, thisArg?: any): void;
+
+		/**
+		 * Get the diagnostics for a given resource. *Note* that you cannot
+		 * modify the diagnostics-array returned from this call.
+		 *
+		 * @param uri A resource identifier.
+		 * @returns An immutable array of [diagnostics](#Diagnostic) or `undefined`.
+		 */
+		get(uri: Uri): Diagnostic[];
+
+		/**
+		 * Check if this collection contains diagnostics for a
+		 * given resource.
+		 *
+		 * @param uri A resource identifier.
+		 * @returns `true` if this collection has diagnostic for the given resource.
+		 */
+		has(uri: Uri): boolean;
+
+		/**
 		 * Dispose and free associated resources. Calls
 		 * [clear](#DiagnosticCollection.clear).
 		 */
@@ -2832,6 +2864,13 @@ declare namespace wing {
 	 * Namespace describing the environment the editor runs in.
 	 */
 	export namespace env {
+
+		/**
+		 * The application name of the editor, like 'VS Code'.
+		 *
+		 * @readonly
+		 */
+		export let appName: string;
 
 		/**
 		 * Represents the preferred user-language, like `de-CH`, `fr`, or `en-US`.
@@ -3128,8 +3167,8 @@ declare namespace wing {
 		 * @param the popup window options
 		 * @return A promise that resolves to a Store.
 		 */
-		export function showPopup<O>(type: PopupType, store?: Store, options?: O): Thenable<Store>;
-		export function showPopup<O>(type: PopupType, options?: O): Thenable<Store>;
+		export function showPopup<O>(type: PopupType, store?: Store, options?: O, popupoptions?: PopupOptions): Thenable<Store>;
+		export function showPopup<O>(type: PopupType, options?: O, popupoptions?: PopupOptions): Thenable<void>;
 
 		/**
 		 * Create a new [output channel](#OutputChannel) with the given name.
@@ -3180,6 +3219,49 @@ declare namespace wing {
 	export enum PopupType {
 		Form,
 		WebView
+	}
+
+	export enum PopupPosition {
+		TOP,
+		MIDDLE,
+		BOTTOM
+	}
+
+	export interface PopupOptions {
+		/**
+		 * the position of popup window.
+		 */
+		position?: PopupPosition;
+
+		/**
+		 * the width of popup window.
+		 */
+		width?: number;
+
+		/**
+		 * the height of popup window.
+		 */
+		height?: number;
+
+		/**
+		 * the title text of popup window.
+		 */
+		title?: string;
+
+		/**
+		 * Set `true` the popup window will can move press title.
+		 */
+		movable?: boolean;
+
+		/**
+		 * Set `true` the popup window will show as modal.
+		 */
+		modal?: boolean;
+
+		/**
+		 * Set `true` and title has value the popup window will show close button.
+		 */
+		closeButton?: boolean;
 	}
 
 	export interface IFormOptions {
