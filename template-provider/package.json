@@ -1,0 +1,33 @@
+{
+  "name": "template-provider",
+  "displayName": "Template Provider",
+  "description": "A demo for provide a file and project.",
+  "version": "1.0.0",
+  "publisher": "egret",
+  "engines": {
+    "wing": "^3.0.8"
+  },
+  "categories": [
+    "Other"
+  ],
+  "homepage": "https://github.com/egret-labs/wing-extensions/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egret-labs/wing-extensions.git"
+  },
+  "license": "MIT",
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {},
+  "scripts": {
+    "wing:prepublish": "node ./node_modules/egretwing/bin/compile",
+    "compile": "node ./node_modules/egretwing/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/egretwing/bin/install"
+  },
+  "devDependencies": {
+    "egretwing": "^3.0.4",
+    "typescript": "^1.7.5"
+  }
+}
