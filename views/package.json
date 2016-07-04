@@ -22,14 +22,14 @@
         "type": "utility",
         "id": "test1",
         "title": "测试面板1",
-        "icon": "images/icon.svg",
+        "icon": "images/title-icon.svg",
         "url": "http://baidu.com"
       },
       {
         "type": "utility",
         "id": "test2",
         "title": "测试面板2",
-        "icon": "images/icon.svg",
+        "icon": "images/title-icon.svg",
         "url": "./web/index.html"
       }
     ]
